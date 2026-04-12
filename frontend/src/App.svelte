@@ -6,6 +6,19 @@
   let error = "";
   let items = ["Loading..."];
 
+  const beltPresets = [
+    { label: "Mk.1", rate: 60 },
+    { label: "Mk.2", rate: 120 },
+    { label: "Mk.3", rate: 270 },
+    { label: "Mk.4", rate: 480 },
+    { label: "Mk.5", rate: 780 },
+    { label: "Mk.6", rate: 1200 },
+  ];
+
+  function setBeltRate(rate) {
+    desiredRate = rate;
+  }
+
   // Fetch available items from the backend API
   async function fetchItems() {
     try {
@@ -73,6 +86,19 @@
         step="0.1"
         bind:value={desiredRate}
       />
+      <div class="belt-presets">
+        <span class="belt-label">Belt:</span>
+        {#each beltPresets as preset}
+          <button
+            class="belt-btn"
+            class:active={desiredRate === preset.rate}
+            on:click={() => setBeltRate(preset.rate)}
+            title="Conveyor Belt {preset.label} — {preset.rate} items/min"
+          >
+            {preset.label}
+          </button>
+        {/each}
+      </div>
     </div>
 
     <button class="calc-btn" on:click={calculate} disabled={loading}>
@@ -207,6 +233,43 @@
   select:focus,
   input:focus {
     border-color: var(--accent);
+  }
+
+  .belt-presets {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    margin-top: 6px;
+  }
+
+  .belt-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-right: 2px;
+  }
+
+  .belt-btn {
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 3px 8px;
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    font-family: var(--font-mono);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .belt-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .belt-btn.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #000;
+    font-weight: 600;
   }
 
   .calc-btn {
