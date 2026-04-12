@@ -8,6 +8,7 @@ use axum::{
     http::Method,
 };
 use recipe_engine::{RecipeDatabase, CalculationRequest, CalculationResult};
+use std::collections::HashMap;
 use std::net::SocketAddr;
 use std::sync::Arc;
 use tokio::sync::Mutex;
@@ -15,12 +16,15 @@ use tower_http::cors::{CorsLayer, Any};
 
 pub struct AppState {
     pub db: RecipeDatabase,
+    pub icon_map: HashMap<String, String>,
 }
 
 #[tokio::main]
 async fn main() {
     let db = RecipeDatabase::new();
-    let state = Arc::new(Mutex::new(AppState { db }));
+    let icon_map: HashMap<String, String> = serde_json::from_str(include_str!("icon_map.json"))
+        .expect("Failed to parse icon_map.json");
+    let state = Arc::new(Mutex::new(AppState { db, icon_map }));
 
     let cors = CorsLayer::new()
         .allow_origin(Any)
@@ -30,6 +34,7 @@ async fn main() {
     let app = Router::new()
         .route("/health", get(health_check))
         .route("/api/items", get(get_items))
+        .route("/api/icons", get(get_icons))
         .route("/api/calculate", post(calculate))
         .with_state(state)
         .layer(cors);
@@ -50,6 +55,13 @@ async fn get_items(
 ) -> Json<Vec<String>> {
     let state = state.lock().await;
     Json(state.db.items())
+}
+
+async fn get_icons(
+    State(state): State<Arc<Mutex<AppState>>>,
+) -> Json<HashMap<String, String>> {
+    let state = state.lock().await;
+    Json(state.icon_map.clone())
 }
 
 async fn calculate(

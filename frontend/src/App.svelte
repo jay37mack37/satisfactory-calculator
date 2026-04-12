@@ -5,6 +5,7 @@
   let loading = false;
   let error = "";
   let items = ["Loading..."];
+  let iconMap = {};
 
   const beltPresets = [
     { label: "Mk.1", rate: 60 },
@@ -29,6 +30,10 @@
     desiredRate = rate;
   }
 
+  function getIcon(item) {
+    return iconMap[item] || null;
+  }
+
   // Fetch available items from the backend API
   async function fetchItems() {
     try {
@@ -44,7 +49,20 @@
     }
   }
 
+  // Fetch icon map from the backend API
+  async function fetchIcons() {
+    try {
+      const res = await fetch("http://localhost:3000/api/icons");
+      if (res.ok) {
+        iconMap = await res.json();
+      }
+    } catch (e) {
+      console.error("Failed to fetch icons:", e);
+    }
+  }
+
   fetchItems();
+  fetchIcons();
 
   async function calculate() {
     loading = true;
@@ -85,6 +103,16 @@
           <option value={item}>{item}</option>
         {/each}
       </select>
+      {#if getIcon(selectedItem)}
+        <div class="selected-item-preview">
+          <img
+            src={getIcon(selectedItem)}
+            alt={selectedItem}
+            class="item-icon-lg"
+          />
+          <span>{selectedItem}</span>
+        </div>
+      {/if}
     </div>
 
     <div class="field">
@@ -170,7 +198,16 @@
         <tbody>
           {#each result.nodes as node}
             <tr>
-              <td>{node.item}</td>
+              <td class="item-cell">
+                {#if getIcon(node.item)}
+                  <img
+                    src={getIcon(node.item)}
+                    alt={node.item}
+                    class="item-icon"
+                  />
+                {/if}
+                {node.item}
+              </td>
               <td>{node.rate.toFixed(2)}</td>
               <td>{node.machine_name}</td>
               <td>{node.machines_needed.toFixed(2)}</td>
@@ -184,7 +221,12 @@
       <div class="raw-grid">
         {#each Object.entries(result.raw_resources) as [resource, rate]}
           <div class="raw-card">
-            <span class="raw-name">{resource}</span>
+            <div class="raw-left">
+              {#if getIcon(resource)}
+                <img src={getIcon(resource)} alt={resource} class="item-icon" />
+              {/if}
+              <span class="raw-name">{resource}</span>
+            </div>
             <span class="raw-rate">{rate.toFixed(2)}/min</span>
           </div>
         {/each}
@@ -196,10 +238,21 @@
           {#each result.byproducts as bp}
             <div class="byproduct-card">
               <div class="bp-header">
-                <span class="bp-name">{bp.item}</span>
+                <div class="bp-left">
+                  {#if getIcon(bp.item)}
+                    <img
+                      src={getIcon(bp.item)}
+                      alt={bp.item}
+                      class="item-icon"
+                    />
+                  {/if}
+                  <span class="bp-name">{bp.item}</span>
+                </div>
                 <span class="bp-rate">+{bp.rate.toFixed(2)}/min</span>
               </div>
-              <span class="bp-source">from {bp.source_item} ({bp.source_machine})</span>
+              <span class="bp-source"
+                >from {bp.source_item} ({bp.source_machine})</span
+              >
             </div>
           {/each}
         </div>
@@ -526,5 +579,57 @@
   .bp-source {
     font-size: 0.75rem;
     color: var(--text-muted);
+  }
+
+  /* Item icons */
+  .item-icon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    vertical-align: middle;
+    margin-right: 6px;
+    image-rendering: pixelated;
+    flex-shrink: 0;
+  }
+
+  .item-icon-lg {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    image-rendering: pixelated;
+  }
+
+  .selected-item-preview {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 8px;
+    padding: 8px 12px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+
+  .selected-item-preview span {
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .item-cell {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+  }
+
+  .raw-left {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+  }
+
+  .bp-left {
+    display: flex;
+    align-items: center;
+    min-width: 0;
   }
 </style>
