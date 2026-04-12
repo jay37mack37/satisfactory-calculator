@@ -316,7 +316,7 @@
   .input-panel {
     display: flex;
     gap: 16px;
-    align-items: flex-end;
+    align-items: flex-start;
     background: var(--bg-secondary);
     border: 1px solid var(--border);
     border-radius: 12px;
