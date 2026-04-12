@@ -1,11 +1,11 @@
 <script>
-  let selectedItem = "Rotor";
-  let desiredRate = 10;
-  let result = null;
-  let loading = false;
-  let error = "";
-  let items = ["Loading..."];
-  let iconMap = {};
+  let selectedItem = $state("Rotor");
+  let desiredRate = $state(10);
+  let result = $state(null);
+  let loading = $state(false);
+  let error = $state("");
+  let items = $state(["Loading..."]);
+  let iconMap = $state({});
 
   // API base URL — configurable via VITE_API_URL env var at build/dev-server time
   const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
@@ -37,7 +37,7 @@
     return iconMap[item] || null;
   }
 
-  // Fetch available items from the backend API
+  // Fetch available items and icon map from the backend API
   async function fetchItems() {
     try {
       const res = await fetch(`${API_BASE}/api/items`);
@@ -52,7 +52,6 @@
     }
   }
 
-  // Fetch icon map from the backend API
   async function fetchIcons() {
     try {
       const res = await fetch(`${API_BASE}/api/icons`);
@@ -64,8 +63,8 @@
     }
   }
 
-  fetchItems();
-  fetchIcons();
+  // Fetch both in parallel
+  Promise.all([fetchItems(), fetchIcons()]);
 
   async function calculate() {
     loading = true;
