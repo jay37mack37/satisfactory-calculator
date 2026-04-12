@@ -100,21 +100,20 @@
   <section class="input-panel">
     <div class="field">
       <label for="item-select">Target Item</label>
-      <select id="item-select" bind:value={selectedItem}>
-        {#each items as item}
-          <option value={item}>{item}</option>
-        {/each}
-      </select>
-      {#if getIcon(selectedItem)}
-        <div class="selected-item-preview">
+      <div class="select-wrapper">
+        {#if getIcon(selectedItem)}
           <img
             src={getIcon(selectedItem)}
             alt={selectedItem}
-            class="item-icon-lg"
+            class="select-icon"
           />
-          <span>{selectedItem}</span>
-        </div>
-      {/if}
+        {/if}
+        <select id="item-select" bind:value={selectedItem}>
+          {#each items as item}
+            <option value={item}>{item}</option>
+          {/each}
+        </select>
+      </div>
     </div>
 
     <div class="field">
@@ -594,27 +593,27 @@
     flex-shrink: 0;
   }
 
-  .item-icon-lg {
-    width: 48px;
-    height: 48px;
-    object-fit: contain;
-    image-rendering: pixelated;
-  }
-
-  .selected-item-preview {
+  .select-wrapper {
+    position: relative;
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin-top: 8px;
-    padding: 8px 12px;
-    background: var(--bg-tertiary);
-    border: 1px solid var(--border);
-    border-radius: 8px;
   }
 
-  .selected-item-preview span {
-    font-weight: 600;
-    color: var(--text-primary);
+  .select-icon {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+    image-rendering: pixelated;
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .select-wrapper select {
+    padding-left: 44px;
   }
 
   .item-cell {
