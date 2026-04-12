@@ -541,6 +541,54 @@
                 "Heavy Modular Frame": 1.5,
                 "Circuit Board": 7.5
             }
+        },
+        {
+            "output_item": "Heavy Oil Residue",
+            "output_rate": 40.0,
+            "machine_name": "Refinery",
+            "power_cost": 30.0,
+            "required_inputs": { "Crude Oil": 60.0 },
+            "byproducts": { "Polymer Resin": 30.0 }
+        },
+        {
+            "output_item": "Fuel",
+            "output_rate": 40.0,
+            "machine_name": "Refinery",
+            "power_cost": 30.0,
+            "required_inputs": { "Crude Oil": 60.0 },
+            "byproducts": { "Polymer Resin": 20.0 }
+        },
+        {
+            "output_item": "Alumina Solution",
+            "output_rate": 120.0,
+            "machine_name": "Refinery",
+            "power_cost": 30.0,
+            "required_inputs": { "Bauxite": 120.0, "Coal": 120.0 },
+            "byproducts": { "Water": 120.0 }
+        },
+        {
+            "output_item": "Aluminum Scrap",
+            "output_rate": 60.0,
+            "machine_name": "Refinery",
+            "power_cost": 30.0,
+            "required_inputs": { "Alumina Solution": 120.0, "Coal": 60.0 },
+            "byproducts": { "Water": 60.0 }
+        },
+        {
+            "output_item": "Sulfuric Acid",
+            "output_rate": 30.0,
+            "machine_name": "Refinery",
+            "power_cost": 30.0,
+            "required_inputs": { "Sulfur": 60.0, "Water": 60.0 },
+            "byproducts": {}
+        },
+        {
+            "output_item": "Petroleum Coke",
+            "output_rate": 120.0,
+            "machine_name": "Refinery",
+            "power_cost": 30.0,
+            "required_inputs": { "Heavy Oil Residue": 40.0 },
+            "byproducts": {}
         }
     ]
 }

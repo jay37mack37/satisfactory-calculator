@@ -11,6 +11,8 @@ pub struct Recipe {
     pub machine_name: String,                    // e.g. "Constructor", "Assembler"
     pub power_cost: f64,                         // MW per machine
     pub required_inputs: HashMap<String, f64>,   // item name -> items/min required
+    #[serde(default)]
+    pub byproducts: HashMap<String, f64>,        // byproduct item -> rate per machine
 }
 
 /// A single node in the production tree result.
@@ -23,12 +25,22 @@ pub struct ProductionNode {
     pub power_cost: f64,
 }
 
+/// A byproduct output from a production step.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ByproductNode {
+    pub item: String,
+    pub rate: f64,
+    pub source_item: String,
+    pub source_machine: String,
+}
+
 /// The full result of a calculation.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CalculationResult {
     pub target_item: String,
     pub target_rate: f64,
     pub nodes: Vec<ProductionNode>,
+    pub byproducts: Vec<ByproductNode>,
     pub total_power: f64,
     pub raw_resources: HashMap<String, f64>,
 }
@@ -78,15 +90,17 @@ impl RecipeDatabase {
     /// all the way down to raw ores, returning every production node.
     pub fn calculate_requirements(&self, item: &str, rate: f64) -> CalculationResult {
         let mut nodes: Vec<ProductionNode> = Vec::new();
+        let mut byproducts: Vec<ByproductNode> = Vec::new();
         let mut raw_resources: HashMap<String, f64> = HashMap::new();
         let mut total_power: f64 = 0.0;
 
-        self.walk_tree(item, rate, &mut nodes, &mut raw_resources, &mut total_power);
+        self.walk_tree(item, rate, &mut nodes, &mut byproducts, &mut raw_resources, &mut total_power);
 
         CalculationResult {
             target_item: item.to_string(),
             target_rate: rate,
             nodes,
+            byproducts,
             total_power,
             raw_resources,
         }
@@ -97,6 +111,7 @@ impl RecipeDatabase {
         item: &str,
         rate: f64,
         nodes: &mut Vec<ProductionNode>,
+        byproducts: &mut Vec<ByproductNode>,
         raw_resources: &mut HashMap<String, f64>,
         total_power: &mut f64,
     ) {
@@ -114,6 +129,17 @@ impl RecipeDatabase {
                     power_cost: power,
                 });
 
+                // Track byproducts from this recipe
+                for (bp_item, bp_rate_per_machine) in &recipe.byproducts {
+                    let bp_total_rate = bp_rate_per_machine * machines_needed;
+                    byproducts.push(ByproductNode {
+                        item: bp_item.clone(),
+                        rate: bp_total_rate,
+                        source_item: item.to_string(),
+                        source_machine: recipe.machine_name.clone(),
+                    });
+                }
+
                 // If this recipe has no inputs, it's a raw resource
                 if recipe.required_inputs.is_empty() {
                     *raw_resources.entry(item.to_string()).or_insert(0.0) += rate;
@@ -122,7 +148,7 @@ impl RecipeDatabase {
                 // Recurse into each input
                 for (input_item, input_rate_per_machine) in &recipe.required_inputs {
                     let required_rate = input_rate_per_machine * machines_needed;
-                    self.walk_tree(input_item, required_rate, nodes, raw_resources, total_power);
+                    self.walk_tree(input_item, required_rate, nodes, byproducts, raw_resources, total_power);
                 }
             }
             None => {

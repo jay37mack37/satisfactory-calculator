@@ -15,7 +15,17 @@
     { label: "Mk.6", rate: 1200 },
   ];
 
+  const pipePresets = [
+    { label: "Mk.1", rate: 300 },
+    { label: "Mk.2", rate: 600 },
+    { label: "Mk.3", rate: 1200 },
+  ];
+
   function setBeltRate(rate) {
+    desiredRate = rate;
+  }
+
+  function setPipeRate(rate) {
     desiredRate = rate;
   }
 
@@ -99,6 +109,19 @@
           </button>
         {/each}
       </div>
+      <div class="belt-presets">
+        <span class="belt-label">Pipe:</span>
+        {#each pipePresets as preset}
+          <button
+            class="pipe-btn"
+            class:active={desiredRate === preset.rate}
+            on:click={() => setPipeRate(preset.rate)}
+            title="Pipeline {preset.label} — {preset.rate} m³/min"
+          >
+            {preset.label}
+          </button>
+        {/each}
+      </div>
     </div>
 
     <button class="calc-btn" on:click={calculate} disabled={loading}>
@@ -166,6 +189,21 @@
           </div>
         {/each}
       </div>
+
+      {#if result.byproducts && result.byproducts.length > 0}
+        <h3>🎁 Byproducts</h3>
+        <div class="byproduct-grid">
+          {#each result.byproducts as bp}
+            <div class="byproduct-card">
+              <div class="bp-header">
+                <span class="bp-name">{bp.item}</span>
+                <span class="bp-rate">+{bp.rate.toFixed(2)}/min</span>
+              </div>
+              <span class="bp-source">from {bp.source_item} ({bp.source_machine})</span>
+            </div>
+          {/each}
+        </div>
+      {/if}
     </section>
   {/if}
 </main>
@@ -269,6 +307,30 @@
     background: var(--accent);
     border-color: var(--accent);
     color: #000;
+    font-weight: 600;
+  }
+
+  .pipe-btn {
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 3px 8px;
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    font-family: var(--font-mono);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .pipe-btn:hover {
+    border-color: #3b82f6;
+    color: #3b82f6;
+  }
+
+  .pipe-btn.active {
+    background: #3b82f6;
+    border-color: #3b82f6;
+    color: #fff;
     font-weight: 600;
   }
 
@@ -428,5 +490,41 @@
     font-family: var(--font-mono);
     color: var(--accent);
     font-size: 0.9rem;
+  }
+
+  .byproduct-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px;
+  }
+
+  .byproduct-card {
+    background: var(--bg-card);
+    border: 1px solid rgba(34, 197, 94, 0.3);
+    border-radius: 8px;
+    padding: 14px 16px;
+  }
+
+  .bp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+  }
+
+  .bp-name {
+    font-weight: 500;
+  }
+
+  .bp-rate {
+    font-family: var(--font-mono);
+    color: var(--success);
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+  .bp-source {
+    font-size: 0.75rem;
+    color: var(--text-muted);
   }
 </style>
