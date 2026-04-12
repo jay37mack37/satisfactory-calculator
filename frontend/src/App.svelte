@@ -25,12 +25,29 @@
     { label: "Mk.3", rate: 1200 },
   ];
 
+  let dropdownOpen = $state(false);
+
   function setBeltRate(rate) {
     desiredRate = rate;
   }
 
   function setPipeRate(rate) {
     desiredRate = rate;
+  }
+
+  function selectItem(item) {
+    selectedItem = item;
+    dropdownOpen = false;
+  }
+
+  function toggleDropdown() {
+    dropdownOpen = !dropdownOpen;
+  }
+
+  function closeDropdown(e) {
+    if (!e.currentTarget.contains(e.relatedTarget)) {
+      dropdownOpen = false;
+    }
   }
 
   function getIcon(item) {
@@ -99,20 +116,31 @@
 
   <section class="input-panel">
     <div class="field">
-      <label for="item-select">Target Item</label>
-      <div class="select-wrapper">
-        {#if getIcon(selectedItem)}
-          <img
-            src={getIcon(selectedItem)}
-            alt={selectedItem}
-            class="select-icon"
-          />
+      <label>Target Item</label>
+      <div class="custom-select" tabindex="0" on:focusout={closeDropdown}>
+        <div class="custom-select-trigger" on:click={toggleDropdown}>
+          {#if getIcon(selectedItem)}
+            <img src={getIcon(selectedItem)} alt={selectedItem} class="select-icon" />
+          {/if}
+          <span class="custom-select-text">{selectedItem}</span>
+          <span class="custom-select-arrow">▼</span>
+        </div>
+        {#if dropdownOpen}
+          <ul class="custom-select-options">
+            {#each items as item}
+              <li
+                class="custom-select-option"
+                class:active={item === selectedItem}
+                on:click={() => selectItem(item)}
+              >
+                {#if getIcon(item)}
+                  <img src={getIcon(item)} alt={item} class="option-icon" />
+                {/if}
+                <span>{item}</span>
+              </li>
+            {/each}
+          </ul>
         {/if}
-        <select id="item-select" bind:value={selectedItem}>
-          {#each items as item}
-            <option value={item}>{item}</option>
-          {/each}
-        </select>
       </div>
     </div>
 
@@ -593,10 +621,79 @@
     flex-shrink: 0;
   }
 
-  .select-wrapper {
+  /* Custom select dropdown */
+  .custom-select {
     position: relative;
+    outline: none;
+  }
+
+  .custom-select-trigger {
     display: flex;
     align-items: center;
+    gap: 8px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    color: var(--text-primary);
+    font-size: 1rem;
+    font-family: var(--font-sans);
+    cursor: pointer;
+    transition: border-color 0.2s;
+    min-height: 42px;
+  }
+
+  .custom-select:focus-within .custom-select-trigger,
+  .custom-select-trigger:hover {
+    border-color: var(--accent);
+  }
+
+  .custom-select-text {
+    flex: 1;
+  }
+
+  .custom-select-arrow {
+    color: var(--text-muted);
+    font-size: 0.7rem;
+    margin-left: auto;
+  }
+
+  .custom-select-options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-top: 4px;
+    max-height: 280px;
+    overflow-y: auto;
+    list-style: none;
+    padding: 4px 0;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  }
+
+  .custom-select-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    cursor: pointer;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    transition: background 0.1s;
+  }
+
+  .custom-select-option:hover {
+    background: var(--bg-tertiary);
+  }
+
+  .custom-select-option.active {
+    background: var(--accent-glow);
+    color: var(--accent);
+    font-weight: 600;
   }
 
   .select-icon {
@@ -604,16 +701,15 @@
     height: 28px;
     object-fit: contain;
     image-rendering: pixelated;
-    position: absolute;
-    left: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    pointer-events: none;
-    z-index: 1;
+    flex-shrink: 0;
   }
 
-  .select-wrapper select {
-    padding-left: 44px;
+  .option-icon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    image-rendering: pixelated;
+    flex-shrink: 0;
   }
 
   .item-cell {
