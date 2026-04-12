@@ -7,6 +7,9 @@
   let items = ["Loading..."];
   let iconMap = {};
 
+  // API base URL — configurable via VITE_API_URL env var at build/dev-server time
+  const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
+
   const beltPresets = [
     { label: "Mk.1", rate: 60 },
     { label: "Mk.2", rate: 120 },
@@ -37,7 +40,7 @@
   // Fetch available items from the backend API
   async function fetchItems() {
     try {
-      const res = await fetch("http://localhost:3000/api/items");
+      const res = await fetch(`${API_BASE}/api/items`);
       if (res.ok) {
         items = await res.json();
         if (items.length > 0 && !items.includes(selectedItem)) {
@@ -52,7 +55,7 @@
   // Fetch icon map from the backend API
   async function fetchIcons() {
     try {
-      const res = await fetch("http://localhost:3000/api/icons");
+      const res = await fetch(`${API_BASE}/api/icons`);
       if (res.ok) {
         iconMap = await res.json();
       }
@@ -70,7 +73,7 @@
     result = null;
 
     try {
-      const res = await fetch("http://localhost:3000/api/calculate", {
+      const res = await fetch(`${API_BASE}/api/calculate`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ item: selectedItem, rate: desiredRate }),

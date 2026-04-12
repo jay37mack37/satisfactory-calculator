@@ -19,8 +19,31 @@ pub struct AppState {
     pub icon_map: HashMap<String, String>,
 }
 
+/// Parse CLI arguments for host and port.
+/// Usage: backend [host] [port]
+///   host: defaults to "0.0.0.0" (or BACKEND_HOST env var)
+///   port: defaults to 3000 (or BACKEND_PORT env var)
+fn parse_args() -> (String, u16) {
+    let args: Vec<String> = std::env::args().collect();
+    let host = if args.len() > 1 {
+        args[1].clone()
+    } else {
+        std::env::var("BACKEND_HOST").unwrap_or_else(|_| "0.0.0.0".to_string())
+    };
+    let port = if args.len() > 2 {
+        args[2].parse().expect("Invalid port number")
+    } else {
+        std::env::var("BACKEND_PORT")
+            .ok()
+            .and_then(|p| p.parse().ok())
+            .unwrap_or(3000)
+    };
+    (host, port)
+}
+
 #[tokio::main]
 async fn main() {
+    let (host, port) = parse_args();
     let db = RecipeDatabase::new();
     let icon_map: HashMap<String, String> = serde_json::from_str(include_str!("icon_map.json"))
         .expect("Failed to parse icon_map.json");
@@ -39,7 +62,9 @@ async fn main() {
         .with_state(state)
         .layer(cors);
 
-    let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
+    let addr: SocketAddr = format!("{}:{}", host, port)
+        .parse()
+        .expect("Invalid host:port address");
     println!("🚀 Server listening on http://{}", addr);
 
     let listener = tokio::net::TcpListener::bind(addr).await.unwrap();
