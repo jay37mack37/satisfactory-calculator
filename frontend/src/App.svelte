@@ -4,19 +4,65 @@
   let result = null;
   let loading = false;
   let error = "";
+  let items = ["Loading..."];
+  let iconMap = {};
 
-  const items = [
-    "Iron Ore",
-    "Copper Ore",
-    "Iron Ingot",
-    "Copper Ingot",
-    "Iron Plate",
-    "Iron Rod",
-    "Copper Wire",
-    "Rotor",
-    "Reinforced Iron Plate",
-    "Modular Frame",
+  const beltPresets = [
+    { label: "Mk.1", rate: 60 },
+    { label: "Mk.2", rate: 120 },
+    { label: "Mk.3", rate: 270 },
+    { label: "Mk.4", rate: 480 },
+    { label: "Mk.5", rate: 780 },
+    { label: "Mk.6", rate: 1200 },
   ];
+
+  const pipePresets = [
+    { label: "Mk.1", rate: 300 },
+    { label: "Mk.2", rate: 600 },
+    { label: "Mk.3", rate: 1200 },
+  ];
+
+  function setBeltRate(rate) {
+    desiredRate = rate;
+  }
+
+  function setPipeRate(rate) {
+    desiredRate = rate;
+  }
+
+  function getIcon(item) {
+    return iconMap[item] || null;
+  }
+
+  // Fetch available items from the backend API
+  async function fetchItems() {
+    try {
+      const res = await fetch("http://localhost:3000/api/items");
+      if (res.ok) {
+        items = await res.json();
+        if (items.length > 0 && !items.includes(selectedItem)) {
+          selectedItem = items[0];
+        }
+      }
+    } catch (e) {
+      console.error("Failed to fetch items:", e);
+    }
+  }
+
+  // Fetch icon map from the backend API
+  async function fetchIcons() {
+    try {
+      const res = await fetch("http://localhost:3000/api/icons");
+      if (res.ok) {
+        iconMap = await res.json();
+      }
+    } catch (e) {
+      console.error("Failed to fetch icons:", e);
+    }
+  }
+
+  fetchItems();
+  fetchIcons();
 
   async function calculate() {
     loading = true;
@@ -57,6 +103,16 @@
           <option value={item}>{item}</option>
         {/each}
       </select>
+      {#if getIcon(selectedItem)}
+        <div class="selected-item-preview">
+          <img
+            src={getIcon(selectedItem)}
+            alt={selectedItem}
+            class="item-icon-lg"
+          />
+          <span>{selectedItem}</span>
+        </div>
+      {/if}
     </div>
 
     <div class="field">
@@ -68,6 +124,32 @@
         step="0.1"
         bind:value={desiredRate}
       />
+      <div class="belt-presets">
+        <span class="belt-label">Belt:</span>
+        {#each beltPresets as preset}
+          <button
+            class="belt-btn"
+            class:active={desiredRate === preset.rate}
+            on:click={() => setBeltRate(preset.rate)}
+            title="Conveyor Belt {preset.label} — {preset.rate} items/min"
+          >
+            {preset.label}
+          </button>
+        {/each}
+      </div>
+      <div class="belt-presets">
+        <span class="belt-label">Pipe:</span>
+        {#each pipePresets as preset}
+          <button
+            class="pipe-btn"
+            class:active={desiredRate === preset.rate}
+            on:click={() => setPipeRate(preset.rate)}
+            title="Pipeline {preset.label} — {preset.rate} m³/min"
+          >
+            {preset.label}
+          </button>
+        {/each}
+      </div>
     </div>
 
     <button class="calc-btn" on:click={calculate} disabled={loading}>
@@ -116,7 +198,16 @@
         <tbody>
           {#each result.nodes as node}
             <tr>
-              <td>{node.item}</td>
+              <td class="item-cell">
+                {#if getIcon(node.item)}
+                  <img
+                    src={getIcon(node.item)}
+                    alt={node.item}
+                    class="item-icon"
+                  />
+                {/if}
+                {node.item}
+              </td>
               <td>{node.rate.toFixed(2)}</td>
               <td>{node.machine_name}</td>
               <td>{node.machines_needed.toFixed(2)}</td>
@@ -130,11 +221,42 @@
       <div class="raw-grid">
         {#each Object.entries(result.raw_resources) as [resource, rate]}
           <div class="raw-card">
-            <span class="raw-name">{resource}</span>
+            <div class="raw-left">
+              {#if getIcon(resource)}
+                <img src={getIcon(resource)} alt={resource} class="item-icon" />
+              {/if}
+              <span class="raw-name">{resource}</span>
+            </div>
             <span class="raw-rate">{rate.toFixed(2)}/min</span>
           </div>
         {/each}
       </div>
+
+      {#if result.byproducts && result.byproducts.length > 0}
+        <h3>🎁 Byproducts</h3>
+        <div class="byproduct-grid">
+          {#each result.byproducts as bp}
+            <div class="byproduct-card">
+              <div class="bp-header">
+                <div class="bp-left">
+                  {#if getIcon(bp.item)}
+                    <img
+                      src={getIcon(bp.item)}
+                      alt={bp.item}
+                      class="item-icon"
+                    />
+                  {/if}
+                  <span class="bp-name">{bp.item}</span>
+                </div>
+                <span class="bp-rate">+{bp.rate.toFixed(2)}/min</span>
+              </div>
+              <span class="bp-source"
+                >from {bp.source_item} ({bp.source_machine})</span
+              >
+            </div>
+          {/each}
+        </div>
+      {/if}
     </section>
   {/if}
 </main>
@@ -202,6 +324,67 @@
   select:focus,
   input:focus {
     border-color: var(--accent);
+  }
+
+  .belt-presets {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    margin-top: 6px;
+  }
+
+  .belt-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-right: 2px;
+  }
+
+  .belt-btn {
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 3px 8px;
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    font-family: var(--font-mono);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .belt-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .belt-btn.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #000;
+    font-weight: 600;
+  }
+
+  .pipe-btn {
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 3px 8px;
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    font-family: var(--font-mono);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .pipe-btn:hover {
+    border-color: #3b82f6;
+    color: #3b82f6;
+  }
+
+  .pipe-btn.active {
+    background: #3b82f6;
+    border-color: #3b82f6;
+    color: #fff;
+    font-weight: 600;
   }
 
   .calc-btn {
@@ -360,5 +543,93 @@
     font-family: var(--font-mono);
     color: var(--accent);
     font-size: 0.9rem;
+  }
+
+  .byproduct-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px;
+  }
+
+  .byproduct-card {
+    background: var(--bg-card);
+    border: 1px solid rgba(34, 197, 94, 0.3);
+    border-radius: 8px;
+    padding: 14px 16px;
+  }
+
+  .bp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+  }
+
+  .bp-name {
+    font-weight: 500;
+  }
+
+  .bp-rate {
+    font-family: var(--font-mono);
+    color: var(--success);
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+  .bp-source {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  /* Item icons */
+  .item-icon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    vertical-align: middle;
+    margin-right: 6px;
+    image-rendering: pixelated;
+    flex-shrink: 0;
+  }
+
+  .item-icon-lg {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    image-rendering: pixelated;
+  }
+
+  .selected-item-preview {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 8px;
+    padding: 8px 12px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+
+  .selected-item-preview span {
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .item-cell {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+  }
+
+  .raw-left {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+  }
+
+  .bp-left {
+    display: flex;
+    align-items: center;
+    min-width: 0;
   }
 </style>
