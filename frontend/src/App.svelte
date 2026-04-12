@@ -4,19 +4,24 @@
   let result = null;
   let loading = false;
   let error = "";
+  let items = ["Loading..."];
 
-  const items = [
-    "Iron Ore",
-    "Copper Ore",
-    "Iron Ingot",
-    "Copper Ingot",
-    "Iron Plate",
-    "Iron Rod",
-    "Copper Wire",
-    "Rotor",
-    "Reinforced Iron Plate",
-    "Modular Frame",
-  ];
+  // Fetch available items from the backend API
+  async function fetchItems() {
+    try {
+      const res = await fetch("http://localhost:3000/api/items");
+      if (res.ok) {
+        items = await res.json();
+        if (items.length > 0 && !items.includes(selectedItem)) {
+          selectedItem = items[0];
+        }
+      }
+    } catch (e) {
+      console.error("Failed to fetch items:", e);
+    }
+  }
+
+  fetchItems();
 
   async function calculate() {
     loading = true;

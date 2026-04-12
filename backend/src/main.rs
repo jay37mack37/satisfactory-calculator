@@ -24,10 +24,12 @@ async fn main() {
 
     let cors = CorsLayer::new()
         .allow_origin(Any)
-        .allow_methods([Method::GET, Method::POST]);
+        .allow_methods([Method::GET, Method::POST])
+        .allow_headers(Any);
 
     let app = Router::new()
         .route("/health", get(health_check))
+        .route("/api/items", get(get_items))
         .route("/api/calculate", post(calculate))
         .with_state(state)
         .layer(cors);
@@ -41,6 +43,13 @@ async fn main() {
 
 async fn health_check() -> &'static str {
     "OK"
+}
+
+async fn get_items(
+    State(state): State<Arc<Mutex<AppState>>>,
+) -> Json<Vec<String>> {
+    let state = state.lock().await;
+    Json(state.db.items())
 }
 
 async fn calculate(

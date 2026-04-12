@@ -40,6 +40,12 @@ pub struct CalculationRequest {
     pub rate: f64,
 }
 
+/// Helper struct for deserializing the JSON recipe file.
+#[derive(Debug, Deserialize)]
+struct RecipeFile {
+    recipes: Vec<Recipe>,
+}
+
 // ─── Recipe Database ──────────────────────────────────────────────
 
 pub struct RecipeDatabase {
@@ -47,99 +53,25 @@ pub struct RecipeDatabase {
 }
 
 impl RecipeDatabase {
+    /// Loads recipes from the embedded JSON file.
     pub fn new() -> Self {
+        let json_data = include_str!("recipes.json");
+        let file: RecipeFile = serde_json::from_str(json_data)
+            .expect("Failed to parse recipes.json");
+
         let mut recipes = HashMap::new();
-
-        // ── Raw Resources (no inputs) ─────────────────────────
-        recipes.insert("Iron Ore".to_string(), Recipe {
-            output_item: "Iron Ore".to_string(),
-            output_rate: 30.0,
-            machine_name: "Miner Mk.1".to_string(),
-            power_cost: 5.0,
-            required_inputs: HashMap::new(),
-        });
-        recipes.insert("Copper Ore".to_string(), Recipe {
-            output_item: "Copper Ore".to_string(),
-            output_rate: 30.0,
-            machine_name: "Miner Mk.1".to_string(),
-            power_cost: 5.0,
-            required_inputs: HashMap::new(),
-        });
-
-        // ── Smelted Ingots ────────────────────────────────────
-        recipes.insert("Iron Ingot".to_string(), Recipe {
-            output_item: "Iron Ingot".to_string(),
-            output_rate: 30.0,
-            machine_name: "Smelter".to_string(),
-            power_cost: 4.0,
-            required_inputs: HashMap::from([("Iron Ore".to_string(), 30.0)]),
-        });
-        recipes.insert("Copper Ingot".to_string(), Recipe {
-            output_item: "Copper Ingot".to_string(),
-            output_rate: 30.0,
-            machine_name: "Smelter".to_string(),
-            power_cost: 4.0,
-            required_inputs: HashMap::from([("Copper Ore".to_string(), 30.0)]),
-        });
-
-        // ── Constructed Parts ─────────────────────────────────
-        recipes.insert("Iron Plate".to_string(), Recipe {
-            output_item: "Iron Plate".to_string(),
-            output_rate: 20.0,
-            machine_name: "Constructor".to_string(),
-            power_cost: 4.0,
-            required_inputs: HashMap::from([("Iron Ingot".to_string(), 30.0)]),
-        });
-        recipes.insert("Iron Rod".to_string(), Recipe {
-            output_item: "Iron Rod".to_string(),
-            output_rate: 15.0,
-            machine_name: "Constructor".to_string(),
-            power_cost: 4.0,
-            required_inputs: HashMap::from([("Iron Ingot".to_string(), 15.0)]),
-        });
-        recipes.insert("Copper Wire".to_string(), Recipe {
-            output_item: "Copper Wire".to_string(),
-            output_rate: 30.0,
-            machine_name: "Constructor".to_string(),
-            power_cost: 4.0,
-            required_inputs: HashMap::from([("Copper Ingot".to_string(), 15.0)]),
-        });
-
-        // ── Assembled Parts ───────────────────────────────────
-        recipes.insert("Rotor".to_string(), Recipe {
-            output_item: "Rotor".to_string(),
-            output_rate: 4.0,
-            machine_name: "Assembler".to_string(),
-            power_cost: 15.0,
-            required_inputs: HashMap::from([
-                ("Iron Rod".to_string(), 12.0),
-                ("Copper Wire".to_string(), 16.0),
-            ]),
-        });
-        recipes.insert("Reinforced Iron Plate".to_string(), Recipe {
-            output_item: "Reinforced Iron Plate".to_string(),
-            output_rate: 3.0,
-            machine_name: "Assembler".to_string(),
-            power_cost: 15.0,
-            required_inputs: HashMap::from([
-                ("Iron Plate".to_string(), 18.0),
-                ("Iron Rod".to_string(), 12.0),
-            ]),
-        });
-
-        // ── Manufacturer Parts ───────────────────────────────
-        recipes.insert("Modular Frame".to_string(), Recipe {
-            output_item: "Modular Frame".to_string(),
-            output_rate: 2.0,
-            machine_name: "Manufacturer".to_string(),
-            power_cost: 55.0,
-            required_inputs: HashMap::from([
-                ("Reinforced Iron Plate".to_string(), 7.5),
-                ("Iron Rod".to_string(), 15.0),
-            ]),
-        });
+        for recipe in file.recipes {
+            recipes.insert(recipe.output_item.clone(), recipe);
+        }
 
         RecipeDatabase { recipes }
+    }
+
+    /// Returns a sorted list of all craftable item names.
+    pub fn items(&self) -> Vec<String> {
+        let mut items: Vec<String> = self.recipes.keys().cloned().collect();
+        items.sort();
+        items
     }
 
     /// Recursively walks the recipe tree backward from the target item
