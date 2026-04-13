@@ -6,8 +6,8 @@
   let error = "";
   let items = ["Loading..."];
   let iconMap = {};
-  let alternates = {};  // item -> [{recipe_name, output_item, ...}]
-  let recipeOverrides = {};  // item -> recipe_name (user selections)
+  let alternates = {}; // item -> [{recipe_name, output_item, ...}]
+  let recipeOverrides = {}; // item -> recipe_name (user selections)
 
   const beltPresets = [
     { label: "Mk.1", rate: 60 },
@@ -64,11 +64,11 @@
   // Get all items in the current result that have alternates
   $: itemsWithAlternates = result
     ? result.nodes
-        .filter(n => hasAlternates(n.item))
-        .map(n => ({
+        .filter((n) => hasAlternates(n.item))
+        .map((n) => ({
           item: n.item,
           currentRecipe: n.recipe_name,
-          options: alternates[n.item] || []
+          options: alternates[n.item] || [],
         }))
     : [];
 
@@ -127,7 +127,7 @@
         body: JSON.stringify({
           item: selectedItem,
           rate: desiredRate,
-          recipe_overrides: recipeOverrides
+          recipe_overrides: recipeOverrides,
         }),
       });
 
@@ -241,13 +241,20 @@
 
       {#if itemsWithAlternates.length > 0}
         <h3>🔀 Alternate Recipes</h3>
-        <p class="alt-hint">Select alternate recipes to use for specific items. Default uses the standard recipe.</p>
+        <p class="alt-hint">
+          Select alternate recipes to use for specific items. Default uses the
+          standard recipe.
+        </p>
         <div class="alt-grid">
           {#each itemsWithAlternates as entry}
             <div class="alt-card">
               <div class="alt-header">
                 {#if getIcon(entry.item)}
-                  <img src={getIcon(entry.item)} alt={entry.item} class="item-icon" />
+                  <img
+                    src={getIcon(entry.item)}
+                    alt={entry.item}
+                    class="item-icon"
+                  />
                 {/if}
                 <span class="alt-item-name">{entry.item}</span>
               </div>
@@ -258,7 +265,10 @@
               >
                 <option value="">Standard</option>
                 {#each entry.options as opt}
-                  <option value={opt.recipe_name}>{recipeDisplayName(opt.recipe_name)} ({opt.output_rate}/min, {opt.machine_name})</option>
+                  <option value={opt.recipe_name}
+                    >{recipeDisplayName(opt.recipe_name)} ({opt.output_rate}/min,
+                    {opt.machine_name})</option
+                  >
                 {/each}
               </select>
             </div>
@@ -291,8 +301,13 @@
                 {/if}
                 {node.item}
               </td>
-              <td class="recipe-cell" class:alt-recipe={node.recipe_name.startsWith("Alternate:")}>
-                {node.recipe_name.startsWith("Alternate:") ? "⚡ " + node.recipe_name.replace("Alternate: ", "") : "Standard"}
+              <td
+                class="recipe-cell"
+                class:alt-recipe={node.recipe_name.startsWith("Alternate:")}
+              >
+                {node.recipe_name.startsWith("Alternate:")
+                  ? "⚡ " + node.recipe_name.replace("Alternate: ", "")
+                  : "Standard"}
               </td>
               <td>{node.rate.toFixed(2)}</td>
               <td>{node.machine_name}</td>
