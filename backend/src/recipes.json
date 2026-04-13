@@ -1,616 +1,1434 @@
 {
     "recipes": [
         {
+            "recipe_name": "Iron Ore",
             "output_item": "Iron Ore",
             "output_rate": 60.0,
             "machine_name": "Miner Mk.1",
             "power_cost": 5.0,
-            "required_inputs": {}
+            "required_inputs": {},
+            "byproducts": {}
         },
         {
+            "recipe_name": "Copper Ore",
             "output_item": "Copper Ore",
             "output_rate": 60.0,
             "machine_name": "Miner Mk.1",
             "power_cost": 5.0,
-            "required_inputs": {}
+            "required_inputs": {},
+            "byproducts": {}
         },
         {
+            "recipe_name": "Caterium Ore",
             "output_item": "Caterium Ore",
             "output_rate": 60.0,
             "machine_name": "Miner Mk.1",
             "power_cost": 5.0,
-            "required_inputs": {}
+            "required_inputs": {},
+            "byproducts": {}
         },
         {
+            "recipe_name": "Coal",
             "output_item": "Coal",
             "output_rate": 60.0,
             "machine_name": "Miner Mk.1",
             "power_cost": 5.0,
-            "required_inputs": {}
+            "required_inputs": {},
+            "byproducts": {}
         },
         {
+            "recipe_name": "Raw Quartz",
             "output_item": "Raw Quartz",
             "output_rate": 60.0,
             "machine_name": "Miner Mk.1",
             "power_cost": 5.0,
-            "required_inputs": {}
+            "required_inputs": {},
+            "byproducts": {}
         },
         {
+            "recipe_name": "Sulfur",
             "output_item": "Sulfur",
             "output_rate": 60.0,
             "machine_name": "Miner Mk.1",
             "power_cost": 5.0,
-            "required_inputs": {}
+            "required_inputs": {},
+            "byproducts": {}
         },
         {
+            "recipe_name": "Bauxite",
             "output_item": "Bauxite",
             "output_rate": 60.0,
             "machine_name": "Miner Mk.1",
             "power_cost": 5.0,
-            "required_inputs": {}
+            "required_inputs": {},
+            "byproducts": {}
         },
         {
+            "recipe_name": "Uranium",
             "output_item": "Uranium",
             "output_rate": 60.0,
             "machine_name": "Miner Mk.1",
             "power_cost": 5.0,
-            "required_inputs": {}
+            "required_inputs": {},
+            "byproducts": {}
         },
         {
+            "recipe_name": "Limestone",
             "output_item": "Limestone",
             "output_rate": 60.0,
             "machine_name": "Miner Mk.1",
             "power_cost": 5.0,
-            "required_inputs": {}
+            "required_inputs": {},
+            "byproducts": {}
         },
         {
+            "recipe_name": "Crude Oil",
             "output_item": "Crude Oil",
             "output_rate": 60.0,
             "machine_name": "Oil Extractor",
             "power_cost": 55.2,
-            "required_inputs": {}
+            "required_inputs": {},
+            "byproducts": {}
         },
         {
+            "recipe_name": "SAM",
             "output_item": "SAM",
             "output_rate": 60.0,
             "machine_name": "Miner Mk.1",
             "power_cost": 5.0,
-            "required_inputs": {}
+            "required_inputs": {},
+            "byproducts": {}
         },
         {
+            "recipe_name": "Water",
+            "output_item": "Water",
+            "output_rate": 60.0,
+            "machine_name": "Water Extractor",
+            "power_cost": 20.0,
+            "required_inputs": {},
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Nitrogen Gas",
+            "output_item": "Nitrogen Gas",
+            "output_rate": 60.0,
+            "machine_name": "Resource Well Extractor",
+            "power_cost": 30.0,
+            "required_inputs": {},
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Iron Ingot",
             "output_item": "Iron Ingot",
             "output_rate": 30.0,
             "machine_name": "Smelter",
             "power_cost": 4.0,
-            "required_inputs": {
-                "Iron Ore": 30.0
-            }
+            "required_inputs": { "Iron Ore": 30.0 },
+            "byproducts": {}
         },
         {
+            "recipe_name": "Alternate: Basic Iron Ingot",
+            "output_item": "Iron Ingot",
+            "output_rate": 50.0,
+            "machine_name": "Foundry",
+            "power_cost": 16.0,
+            "required_inputs": { "Iron Ore": 25.0, "Limestone": 40.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Alternate: Iron Alloy Ingot",
+            "output_item": "Iron Ingot",
+            "output_rate": 75.0,
+            "machine_name": "Foundry",
+            "power_cost": 16.0,
+            "required_inputs": { "Iron Ore": 40.0, "Copper Ore": 10.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Alternate: Pure Iron Ingot",
+            "output_item": "Iron Ingot",
+            "output_rate": 65.0,
+            "machine_name": "Refinery",
+            "power_cost": 30.0,
+            "required_inputs": { "Iron Ore": 35.0, "Water": 20.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Alternate: Leached Iron Ingot",
+            "output_item": "Iron Ingot",
+            "output_rate": 100.0,
+            "machine_name": "Refinery",
+            "power_cost": 30.0,
+            "required_inputs": { "Iron Ore": 50.0, "Sulfuric Acid": 10.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Copper Ingot",
             "output_item": "Copper Ingot",
             "output_rate": 30.0,
             "machine_name": "Smelter",
             "power_cost": 4.0,
-            "required_inputs": {
-                "Copper Ore": 30.0
-            }
+            "required_inputs": { "Copper Ore": 30.0 },
+            "byproducts": {}
         },
         {
+            "recipe_name": "Alternate: Copper Alloy Ingot",
+            "output_item": "Copper Ingot",
+            "output_rate": 100.0,
+            "machine_name": "Foundry",
+            "power_cost": 16.0,
+            "required_inputs": { "Copper Ore": 50.0, "Iron Ore": 50.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Alternate: Pure Copper Ingot",
+            "output_item": "Copper Ingot",
+            "output_rate": 37.5,
+            "machine_name": "Refinery",
+            "power_cost": 30.0,
+            "required_inputs": { "Copper Ore": 15.0, "Water": 10.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Alternate: Leached Copper Ingot",
+            "output_item": "Copper Ingot",
+            "output_rate": 110.0,
+            "machine_name": "Refinery",
+            "power_cost": 30.0,
+            "required_inputs": { "Copper Ore": 45.0, "Sulfuric Acid": 25.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Alternate: Tempered Copper Ingot",
+            "output_item": "Copper Ingot",
+            "output_rate": 60.0,
+            "machine_name": "Foundry",
+            "power_cost": 16.0,
+            "required_inputs": { "Copper Ore": 25.0, "Petroleum Coke": 40.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Caterium Ingot",
             "output_item": "Caterium Ingot",
             "output_rate": 15.0,
             "machine_name": "Smelter",
             "power_cost": 4.0,
-            "required_inputs": {
-                "Caterium Ore": 45.0
-            }
+            "required_inputs": { "Caterium Ore": 45.0 },
+            "byproducts": {}
         },
         {
+            "recipe_name": "Alternate: Pure Caterium Ingot",
+            "output_item": "Caterium Ingot",
+            "output_rate": 12.0,
+            "machine_name": "Refinery",
+            "power_cost": 30.0,
+            "required_inputs": { "Caterium Ore": 24.0, "Water": 24.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Alternate: Leached Caterium Ingot",
+            "output_item": "Caterium Ingot",
+            "output_rate": 36.0,
+            "machine_name": "Refinery",
+            "power_cost": 30.0,
+            "required_inputs": { "Caterium Ore": 54.0, "Sulfuric Acid": 30.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Alternate: Tempered Caterium Ingot",
+            "output_item": "Caterium Ingot",
+            "output_rate": 22.5,
+            "machine_name": "Foundry",
+            "power_cost": 16.0,
+            "required_inputs": { "Caterium Ore": 45.0, "Petroleum Coke": 15.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Steel Ingot",
             "output_item": "Steel Ingot",
             "output_rate": 45.0,
             "machine_name": "Foundry",
             "power_cost": 16.0,
-            "required_inputs": {
-                "Iron Ore": 45.0,
-                "Coal": 45.0
-            }
+            "required_inputs": { "Iron Ore": 45.0, "Coal": 45.0 },
+            "byproducts": {}
         },
         {
+            "recipe_name": "Alternate: Solid Steel Ingot",
+            "output_item": "Steel Ingot",
+            "output_rate": 60.0,
+            "machine_name": "Foundry",
+            "power_cost": 16.0,
+            "required_inputs": { "Iron Ingot": 40.0, "Coal": 40.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Alternate: Coke Steel Ingot",
+            "output_item": "Steel Ingot",
+            "output_rate": 100.0,
+            "machine_name": "Foundry",
+            "power_cost": 16.0,
+            "required_inputs": { "Iron Ore": 75.0, "Petroleum Coke": 75.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Alternate: Compacted Steel Ingot",
+            "output_item": "Steel Ingot",
+            "output_rate": 10.0,
+            "machine_name": "Foundry",
+            "power_cost": 16.0,
+            "required_inputs": { "Iron Ore": 5.0, "Compacted Coal": 2.5 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Aluminum Ingot",
             "output_item": "Aluminum Ingot",
             "output_rate": 60.0,
             "machine_name": "Smelter",
             "power_cost": 4.0,
-            "required_inputs": {
-                "Aluminum Scrap": 90.0,
-                "Silica": 75.0
-            }
+            "required_inputs": { "Aluminum Scrap": 90.0, "Silica": 75.0 },
+            "byproducts": {}
         },
         {
+            "recipe_name": "Alternate: Pure Aluminum Ingot",
+            "output_item": "Aluminum Ingot",
+            "output_rate": 30.0,
+            "machine_name": "Smelter",
+            "power_cost": 4.0,
+            "required_inputs": { "Aluminum Scrap": 60.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Iron Plate",
             "output_item": "Iron Plate",
             "output_rate": 20.0,
             "machine_name": "Constructor",
             "power_cost": 4.0,
-            "required_inputs": {
-                "Iron Ingot": 30.0
-            }
+            "required_inputs": { "Iron Ingot": 30.0 },
+            "byproducts": {}
         },
         {
+            "recipe_name": "Alternate: Coated Iron Plate",
+            "output_item": "Iron Plate",
+            "output_rate": 75.0,
+            "machine_name": "Assembler",
+            "power_cost": 15.0,
+            "required_inputs": { "Iron Ingot": 37.5, "Plastic": 7.5 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Alternate: Steel Cast Plate",
+            "output_item": "Iron Plate",
+            "output_rate": 45.0,
+            "machine_name": "Foundry",
+            "power_cost": 16.0,
+            "required_inputs": { "Iron Ingot": 15.0, "Steel Ingot": 15.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Iron Rod",
             "output_item": "Iron Rod",
             "output_rate": 15.0,
             "machine_name": "Constructor",
             "power_cost": 4.0,
-            "required_inputs": {
-                "Iron Ingot": 15.0
-            }
+            "required_inputs": { "Iron Ingot": 15.0 },
+            "byproducts": {}
         },
         {
+            "recipe_name": "Alternate: Steel Rod",
+            "output_item": "Iron Rod",
+            "output_rate": 48.0,
+            "machine_name": "Constructor",
+            "power_cost": 4.0,
+            "required_inputs": { "Steel Ingot": 12.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Alternate: Aluminum Rod",
+            "output_item": "Iron Rod",
+            "output_rate": 52.5,
+            "machine_name": "Constructor",
+            "power_cost": 4.0,
+            "required_inputs": { "Aluminum Ingot": 7.5 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Screws",
             "output_item": "Screws",
             "output_rate": 40.0,
             "machine_name": "Constructor",
             "power_cost": 4.0,
-            "required_inputs": {
-                "Iron Rod": 10.0
-            }
+            "required_inputs": { "Iron Rod": 10.0 },
+            "byproducts": {}
         },
         {
+            "recipe_name": "Alternate: Cast Screws",
+            "output_item": "Screws",
+            "output_rate": 50.0,
+            "machine_name": "Constructor",
+            "power_cost": 4.0,
+            "required_inputs": { "Iron Ingot": 12.5 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Alternate: Steel Screws",
+            "output_item": "Screws",
+            "output_rate": 260.0,
+            "machine_name": "Constructor",
+            "power_cost": 4.0,
+            "required_inputs": { "Steel Beam": 5.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Reinforced Iron Plate",
             "output_item": "Reinforced Iron Plate",
             "output_rate": 6.0,
             "machine_name": "Assembler",
             "power_cost": 15.0,
-            "required_inputs": {
-                "Iron Plate": 12.0,
-                "Screws": 36.0
-            }
+            "required_inputs": { "Iron Plate": 12.0, "Screws": 36.0 },
+            "byproducts": {}
         },
         {
+            "recipe_name": "Alternate: Adhered Iron Plate",
+            "output_item": "Reinforced Iron Plate",
+            "output_rate": 3.75,
+            "machine_name": "Assembler",
+            "power_cost": 15.0,
+            "required_inputs": { "Iron Plate": 11.25, "Rubber": 3.75 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Alternate: Bolted Iron Plate",
+            "output_item": "Reinforced Iron Plate",
+            "output_rate": 15.0,
+            "machine_name": "Assembler",
+            "power_cost": 15.0,
+            "required_inputs": { "Iron Plate": 90.0, "Screws": 250.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Alternate: Stitched Iron Plate",
+            "output_item": "Reinforced Iron Plate",
+            "output_rate": 5.625,
+            "machine_name": "Assembler",
+            "power_cost": 15.0,
+            "required_inputs": { "Iron Plate": 18.75, "Wire": 37.5 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Copper Sheet",
             "output_item": "Copper Sheet",
             "output_rate": 10.0,
             "machine_name": "Constructor",
             "power_cost": 4.0,
-            "required_inputs": {
-                "Copper Ingot": 20.0
-            }
+            "required_inputs": { "Copper Ingot": 20.0 },
+            "byproducts": {}
         },
         {
+            "recipe_name": "Alternate: Steamed Copper Sheet",
+            "output_item": "Copper Sheet",
+            "output_rate": 22.5,
+            "machine_name": "Refinery",
+            "power_cost": 30.0,
+            "required_inputs": { "Copper Ingot": 22.5, "Water": 22.5 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Wire",
             "output_item": "Wire",
             "output_rate": 30.0,
             "machine_name": "Constructor",
             "power_cost": 4.0,
-            "required_inputs": {
-                "Copper Ingot": 15.0
-            }
+            "required_inputs": { "Copper Ingot": 15.0 },
+            "byproducts": {}
         },
         {
+            "recipe_name": "Alternate: Iron Wire",
+            "output_item": "Wire",
+            "output_rate": 22.5,
+            "machine_name": "Constructor",
+            "power_cost": 4.0,
+            "required_inputs": { "Iron Ingot": 12.5 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Alternate: Caterium Wire",
+            "output_item": "Wire",
+            "output_rate": 120.0,
+            "machine_name": "Constructor",
+            "power_cost": 4.0,
+            "required_inputs": { "Caterium Ingot": 15.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Alternate: Fused Wire",
+            "output_item": "Wire",
+            "output_rate": 90.0,
+            "machine_name": "Assembler",
+            "power_cost": 15.0,
+            "required_inputs": { "Copper Ingot": 12.0, "Caterium Ingot": 3.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Cable",
             "output_item": "Cable",
             "output_rate": 30.0,
             "machine_name": "Constructor",
             "power_cost": 4.0,
-            "required_inputs": {
-                "Wire": 60.0
-            }
+            "required_inputs": { "Wire": 60.0 },
+            "byproducts": {}
         },
         {
+            "recipe_name": "Alternate: Insulated Cable",
+            "output_item": "Cable",
+            "output_rate": 100.0,
+            "machine_name": "Assembler",
+            "power_cost": 15.0,
+            "required_inputs": { "Wire": 45.0, "Rubber": 30.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Alternate: Quickwire Cable",
+            "output_item": "Cable",
+            "output_rate": 27.5,
+            "machine_name": "Assembler",
+            "power_cost": 15.0,
+            "required_inputs": { "Quickwire": 7.5, "Rubber": 5.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Alternate: Coated Cable",
+            "output_item": "Cable",
+            "output_rate": 67.5,
+            "machine_name": "Refinery",
+            "power_cost": 30.0,
+            "required_inputs": { "Wire": 37.5, "Heavy Oil Residue": 15.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Concrete",
             "output_item": "Concrete",
             "output_rate": 15.0,
             "machine_name": "Constructor",
             "power_cost": 4.0,
-            "required_inputs": {
-                "Limestone": 45.0
-            }
+            "required_inputs": { "Limestone": 45.0 },
+            "byproducts": {}
         },
         {
+            "recipe_name": "Alternate: Wet Concrete",
+            "output_item": "Concrete",
+            "output_rate": 80.0,
+            "machine_name": "Refinery",
+            "power_cost": 30.0,
+            "required_inputs": { "Limestone": 120.0, "Water": 100.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Alternate: Fine Concrete",
+            "output_item": "Concrete",
+            "output_rate": 50.0,
+            "machine_name": "Assembler",
+            "power_cost": 15.0,
+            "required_inputs": { "Silica": 15.0, "Limestone": 60.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Alternate: Rubber Concrete",
+            "output_item": "Concrete",
+            "output_rate": 90.0,
+            "machine_name": "Assembler",
+            "power_cost": 15.0,
+            "required_inputs": { "Limestone": 100.0, "Rubber": 20.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Steel Beam",
             "output_item": "Steel Beam",
             "output_rate": 15.0,
             "machine_name": "Constructor",
             "power_cost": 4.0,
-            "required_inputs": {
-                "Steel Ingot": 30.0
-            }
+            "required_inputs": { "Steel Ingot": 30.0 },
+            "byproducts": {}
         },
         {
+            "recipe_name": "Alternate: Molded Beam",
+            "output_item": "Steel Beam",
+            "output_rate": 45.0,
+            "machine_name": "Foundry",
+            "power_cost": 16.0,
+            "required_inputs": { "Steel Ingot": 120.0, "Concrete": 80.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Alternate: Aluminum Beam",
+            "output_item": "Steel Beam",
+            "output_rate": 22.5,
+            "machine_name": "Constructor",
+            "power_cost": 4.0,
+            "required_inputs": { "Aluminum Ingot": 22.5 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Steel Pipe",
             "output_item": "Steel Pipe",
             "output_rate": 30.0,
             "machine_name": "Constructor",
             "power_cost": 4.0,
-            "required_inputs": {
-                "Steel Ingot": 30.0
-            }
+            "required_inputs": { "Steel Ingot": 30.0 },
+            "byproducts": {}
         },
         {
+            "recipe_name": "Alternate: Iron Pipe",
+            "output_item": "Steel Pipe",
+            "output_rate": 25.0,
+            "machine_name": "Constructor",
+            "power_cost": 4.0,
+            "required_inputs": { "Iron Ingot": 100.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Alternate: Molded Steel Pipe",
+            "output_item": "Steel Pipe",
+            "output_rate": 50.0,
+            "machine_name": "Foundry",
+            "power_cost": 16.0,
+            "required_inputs": { "Steel Ingot": 50.0, "Concrete": 30.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Modular Frame",
             "output_item": "Modular Frame",
             "output_rate": 2.0,
             "machine_name": "Assembler",
             "power_cost": 15.0,
-            "required_inputs": {
-                "Reinforced Iron Plate": 6.0,
-                "Iron Rod": 12.0
-            }
+            "required_inputs": { "Reinforced Iron Plate": 6.0, "Iron Rod": 12.0 },
+            "byproducts": {}
         },
         {
+            "recipe_name": "Alternate: Bolted Frame",
+            "output_item": "Modular Frame",
+            "output_rate": 5.0,
+            "machine_name": "Assembler",
+            "power_cost": 15.0,
+            "required_inputs": { "Reinforced Iron Plate": 7.5, "Screws": 140.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Alternate: Steeled Frame",
+            "output_item": "Modular Frame",
+            "output_rate": 3.0,
+            "machine_name": "Assembler",
+            "power_cost": 15.0,
+            "required_inputs": { "Reinforced Iron Plate": 2.0, "Steel Pipe": 10.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Rotor",
             "output_item": "Rotor",
             "output_rate": 4.0,
             "machine_name": "Assembler",
             "power_cost": 15.0,
-            "required_inputs": {
-                "Iron Rod": 10.0,
-                "Screws": 24.0
-            }
+            "required_inputs": { "Iron Rod": 10.0, "Screws": 24.0 },
+            "byproducts": {}
         },
         {
+            "recipe_name": "Alternate: Copper Rotor",
+            "output_item": "Rotor",
+            "output_rate": 11.25,
+            "machine_name": "Assembler",
+            "power_cost": 15.0,
+            "required_inputs": { "Copper Sheet": 22.5, "Screws": 195.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Alternate: Steel Rotor",
+            "output_item": "Rotor",
+            "output_rate": 5.0,
+            "machine_name": "Assembler",
+            "power_cost": 15.0,
+            "required_inputs": { "Steel Pipe": 10.0, "Wire": 30.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Stator",
             "output_item": "Stator",
             "output_rate": 5.0,
             "machine_name": "Assembler",
             "power_cost": 15.0,
-            "required_inputs": {
-                "Steel Pipe": 15.0,
-                "Wire": 40.0
-            }
+            "required_inputs": { "Steel Pipe": 15.0, "Wire": 40.0 },
+            "byproducts": {}
         },
         {
+            "recipe_name": "Alternate: Quickwire Stator",
+            "output_item": "Stator",
+            "output_rate": 8.0,
+            "machine_name": "Assembler",
+            "power_cost": 15.0,
+            "required_inputs": { "Steel Pipe": 16.0, "Quickwire": 60.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Motor",
             "output_item": "Motor",
             "output_rate": 5.0,
             "machine_name": "Assembler",
             "power_cost": 15.0,
-            "required_inputs": {
-                "Rotor": 5.0,
-                "Stator": 5.0
-            }
+            "required_inputs": { "Rotor": 5.0, "Stator": 5.0 },
+            "byproducts": {}
         },
         {
+            "recipe_name": "Alternate: Rigor Motor",
+            "output_item": "Motor",
+            "output_rate": 7.5,
+            "machine_name": "Manufacturer",
+            "power_cost": 55.0,
+            "required_inputs": { "Rotor": 3.75, "Stator": 3.75, "Crystal Oscillator": 1.25 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Alternate: Electric Motor",
+            "output_item": "Motor",
+            "output_rate": 7.5,
+            "machine_name": "Assembler",
+            "power_cost": 15.0,
+            "required_inputs": { "Electromagnetic Control Rod": 3.75, "Rotor": 7.5 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Plastic",
             "output_item": "Plastic",
             "output_rate": 20.0,
             "machine_name": "Refinery",
             "power_cost": 30.0,
-            "required_inputs": {
-                "Crude Oil": 60.0
-            }
+            "required_inputs": { "Crude Oil": 60.0 },
+            "byproducts": {}
         },
         {
+            "recipe_name": "Alternate: Recycled Plastic",
+            "output_item": "Plastic",
+            "output_rate": 60.0,
+            "machine_name": "Refinery",
+            "power_cost": 30.0,
+            "required_inputs": { "Rubber": 30.0, "Fuel": 30.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Rubber",
             "output_item": "Rubber",
             "output_rate": 20.0,
             "machine_name": "Refinery",
             "power_cost": 30.0,
-            "required_inputs": {
-                "Crude Oil": 60.0
-            }
+            "required_inputs": { "Crude Oil": 60.0 },
+            "byproducts": {}
         },
         {
+            "recipe_name": "Alternate: Recycled Rubber",
+            "output_item": "Rubber",
+            "output_rate": 60.0,
+            "machine_name": "Refinery",
+            "power_cost": 30.0,
+            "required_inputs": { "Plastic": 30.0, "Fuel": 30.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Fabric",
             "output_item": "Fabric",
             "output_rate": 15.0,
             "machine_name": "Refinery",
             "power_cost": 30.0,
-            "required_inputs": {
-                "Crude Oil": 60.0
-            }
+            "required_inputs": { "Crude Oil": 60.0 },
+            "byproducts": {}
         },
         {
+            "recipe_name": "Encased Industrial Beam",
             "output_item": "Encased Industrial Beam",
             "output_rate": 3.0,
             "machine_name": "Assembler",
             "power_cost": 15.0,
-            "required_inputs": {
-                "Steel Beam": 12.0,
-                "Concrete": 24.0
-            }
+            "required_inputs": { "Steel Beam": 12.0, "Concrete": 24.0 },
+            "byproducts": {}
         },
         {
+            "recipe_name": "Alternate: Encased Industrial Pipe",
+            "output_item": "Encased Industrial Beam",
+            "output_rate": 4.0,
+            "machine_name": "Assembler",
+            "power_cost": 15.0,
+            "required_inputs": { "Steel Pipe": 24.0, "Concrete": 20.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Heavy Modular Frame",
             "output_item": "Heavy Modular Frame",
             "output_rate": 1.0,
             "machine_name": "Manufacturer",
             "power_cost": 55.0,
-            "required_inputs": {
-                "Modular Frame": 5.0,
-                "Steel Pipe": 20.0,
-                "Encased Industrial Beam": 3.0,
-                "Screws": 100.0
-            }
+            "required_inputs": { "Modular Frame": 5.0, "Steel Pipe": 20.0, "Encased Industrial Beam": 3.0, "Screws": 100.0 },
+            "byproducts": {}
         },
         {
+            "recipe_name": "Alternate: Heavy Encased Frame",
+            "output_item": "Heavy Modular Frame",
+            "output_rate": 2.8125,
+            "machine_name": "Manufacturer",
+            "power_cost": 55.0,
+            "required_inputs": { "Modular Frame": 7.5, "Encased Industrial Beam": 9.375, "Steel Pipe": 33.75, "Concrete": 20.625 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Alternate: Heavy Flexible Frame",
+            "output_item": "Heavy Modular Frame",
+            "output_rate": 3.75,
+            "machine_name": "Manufacturer",
+            "power_cost": 55.0,
+            "required_inputs": { "Modular Frame": 18.75, "Encased Industrial Beam": 11.25, "Rubber": 75.0, "Screws": 390.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Circuit Board",
             "output_item": "Circuit Board",
             "output_rate": 7.0,
             "machine_name": "Assembler",
             "power_cost": 15.0,
-            "required_inputs": {
-                "Copper Sheet": 10.0,
-                "Plastic": 20.0
-            }
+            "required_inputs": { "Copper Sheet": 10.0, "Plastic": 20.0 },
+            "byproducts": {}
         },
         {
+            "recipe_name": "Alternate: Silicon Circuit Board",
+            "output_item": "Circuit Board",
+            "output_rate": 12.5,
+            "machine_name": "Assembler",
+            "power_cost": 15.0,
+            "required_inputs": { "Copper Sheet": 27.5, "Silica": 27.5 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Alternate: Electrode Circuit Board",
+            "output_item": "Circuit Board",
+            "output_rate": 5.0,
+            "machine_name": "Assembler",
+            "power_cost": 15.0,
+            "required_inputs": { "Rubber": 20.0, "Petroleum Coke": 40.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Alternate: Caterium Circuit Board",
+            "output_item": "Circuit Board",
+            "output_rate": 8.75,
+            "machine_name": "Assembler",
+            "power_cost": 15.0,
+            "required_inputs": { "Plastic": 12.5, "Quickwire": 37.5 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Computer",
             "output_item": "Computer",
             "output_rate": 1.875,
             "machine_name": "Manufacturer",
             "power_cost": 55.0,
-            "required_inputs": {
-                "Circuit Board": 15.0,
-                "Plastic": 30.0,
-                "Cable": 30.0
-            }
+            "required_inputs": { "Circuit Board": 15.0, "Plastic": 30.0, "Cable": 30.0 },
+            "byproducts": {}
         },
         {
+            "recipe_name": "Alternate: Caterium Computer",
+            "output_item": "Computer",
+            "output_rate": 3.75,
+            "machine_name": "Manufacturer",
+            "power_cost": 55.0,
+            "required_inputs": { "Circuit Board": 15.0, "Quickwire": 52.5, "Rubber": 22.5 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Alternate: Crystal Computer",
+            "output_item": "Computer",
+            "output_rate": 3.33333,
+            "machine_name": "Assembler",
+            "power_cost": 15.0,
+            "required_inputs": { "Circuit Board": 5.0, "Crystal Oscillator": 1.66667 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "High-Speed Connector",
             "output_item": "High-Speed Connector",
             "output_rate": 3.75,
             "machine_name": "Manufacturer",
             "power_cost": 55.0,
-            "required_inputs": {
-                "Quickwire": 120.0,
-                "Cable": 30.0,
-                "Circuit Board": 7.5
-            }
+            "required_inputs": { "Quickwire": 120.0, "Cable": 30.0, "Circuit Board": 7.5 },
+            "byproducts": {}
         },
         {
+            "recipe_name": "Alternate: Silicon High-Speed Connector",
+            "output_item": "High-Speed Connector",
+            "output_rate": 3.0,
+            "machine_name": "Manufacturer",
+            "power_cost": 55.0,
+            "required_inputs": { "Quickwire": 90.0, "Silica": 37.5, "Circuit Board": 3.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Supercomputer",
             "output_item": "Supercomputer",
             "output_rate": 0.75,
             "machine_name": "Manufacturer",
             "power_cost": 55.0,
-            "required_inputs": {
-                "Computer": 1.5,
-                "Aluminum Casing": 11.25,
-                "Circuit Board": 3.75,
-                "High-Speed Connector": 1.5
-            }
+            "required_inputs": { "Computer": 1.5, "Aluminum Casing": 11.25, "Circuit Board": 3.75, "High-Speed Connector": 1.5 },
+            "byproducts": {}
         },
         {
+            "recipe_name": "Alternate: OC Supercomputer",
+            "output_item": "Supercomputer",
+            "output_rate": 3.0,
+            "machine_name": "Assembler",
+            "power_cost": 15.0,
+            "required_inputs": { "Radio Control Unit": 6.0, "Cooling System": 6.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Alternate: Super-State Computer",
+            "output_item": "Supercomputer",
+            "output_rate": 2.4,
+            "machine_name": "Manufacturer",
+            "power_cost": 55.0,
+            "required_inputs": { "Computer": 7.2, "Electromagnetic Control Rod": 2.4, "Battery": 24.0, "Wire": 60.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Heat Sink",
             "output_item": "Heat Sink",
             "output_rate": 5.0,
             "machine_name": "Manufacturer",
             "power_cost": 55.0,
-            "required_inputs": {
-                "Alclad Aluminum Sheet": 22.5,
-                "Copper Sheet": 15.0
-            }
+            "required_inputs": { "Alclad Aluminum Sheet": 22.5, "Copper Sheet": 15.0 },
+            "byproducts": {}
         },
         {
+            "recipe_name": "Alternate: Heat Exchanger",
+            "output_item": "Heat Sink",
+            "output_rate": 10.0,
+            "machine_name": "Assembler",
+            "power_cost": 15.0,
+            "required_inputs": { "Aluminum Casing": 30.0, "Rubber": 30.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Quartz Crystal",
             "output_item": "Quartz Crystal",
             "output_rate": 15.0,
             "machine_name": "Constructor",
             "power_cost": 4.0,
-            "required_inputs": {
-                "Raw Quartz": 45.0
-            }
+            "required_inputs": { "Raw Quartz": 45.0 },
+            "byproducts": {}
         },
         {
+            "recipe_name": "Alternate: Pure Quartz Crystal",
+            "output_item": "Quartz Crystal",
+            "output_rate": 52.5,
+            "machine_name": "Refinery",
+            "power_cost": 30.0,
+            "required_inputs": { "Raw Quartz": 67.5, "Water": 37.5 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Alternate: Fused Quartz Crystal",
+            "output_item": "Quartz Crystal",
+            "output_rate": 54.0,
+            "machine_name": "Foundry",
+            "power_cost": 16.0,
+            "required_inputs": { "Raw Quartz": 75.0, "Coal": 36.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Alternate: Quartz Purification",
+            "output_item": "Quartz Crystal",
+            "output_rate": 75.0,
+            "machine_name": "Refinery",
+            "power_cost": 30.0,
+            "required_inputs": { "Raw Quartz": 120.0, "Nitric Acid": 10.0 },
+            "byproducts": { "Dissolved Silica": 60.0 }
+        },
+        {
+            "recipe_name": "Silica",
             "output_item": "Silica",
             "output_rate": 37.5,
             "machine_name": "Constructor",
             "power_cost": 4.0,
-            "required_inputs": {
-                "Raw Quartz": 22.5
-            }
+            "required_inputs": { "Raw Quartz": 22.5 },
+            "byproducts": {}
         },
         {
+            "recipe_name": "Alternate: Cheap Silica",
+            "output_item": "Silica",
+            "output_rate": 52.5,
+            "machine_name": "Assembler",
+            "power_cost": 15.0,
+            "required_inputs": { "Raw Quartz": 22.5, "Limestone": 37.5 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Alternate: Distilled Silica",
+            "output_item": "Silica",
+            "output_rate": 270.0,
+            "machine_name": "Blender",
+            "power_cost": 75.0,
+            "required_inputs": { "Dissolved Silica": 120.0, "Limestone": 50.0, "Water": 100.0 },
+            "byproducts": { "Water": 80.0 }
+        },
+        {
+            "recipe_name": "Crystal Oscillator",
             "output_item": "Crystal Oscillator",
             "output_rate": 1.25,
             "machine_name": "Manufacturer",
             "power_cost": 55.0,
-            "required_inputs": {
-                "Quartz Crystal": 18.75,
-                "Cable": 37.5,
-                "Reinforced Iron Plate": 2.5
-            }
+            "required_inputs": { "Quartz Crystal": 18.75, "Cable": 37.5, "Reinforced Iron Plate": 2.5 },
+            "byproducts": {}
         },
         {
+            "recipe_name": "Alternate: Insulated Crystal Oscillator",
+            "output_item": "Crystal Oscillator",
+            "output_rate": 1.875,
+            "machine_name": "Manufacturer",
+            "power_cost": 55.0,
+            "required_inputs": { "Quartz Crystal": 18.75, "Rubber": 13.125, "AI Limiter": 1.875 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Quickwire",
             "output_item": "Quickwire",
             "output_rate": 30.0,
             "machine_name": "Constructor",
             "power_cost": 4.0,
-            "required_inputs": {
-                "Caterium Ingot": 7.5
-            }
+            "required_inputs": { "Caterium Ingot": 7.5 },
+            "byproducts": {}
         },
         {
+            "recipe_name": "Alternate: Fused Quickwire",
+            "output_item": "Quickwire",
+            "output_rate": 90.0,
+            "machine_name": "Assembler",
+            "power_cost": 15.0,
+            "required_inputs": { "Caterium Ingot": 7.5, "Copper Ingot": 37.5 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "AI Limiter",
             "output_item": "AI Limiter",
             "output_rate": 3.75,
             "machine_name": "Assembler",
             "power_cost": 15.0,
-            "required_inputs": {
-                "Quickwire": 75.0,
-                "Copper Sheet": 7.5
-            }
+            "required_inputs": { "Quickwire": 75.0, "Copper Sheet": 7.5 },
+            "byproducts": {}
         },
         {
+            "recipe_name": "Alternate: Plastic AI Limiter",
+            "output_item": "AI Limiter",
+            "output_rate": 8.0,
+            "machine_name": "Assembler",
+            "power_cost": 15.0,
+            "required_inputs": { "Quickwire": 120.0, "Plastic": 28.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Alclad Aluminum Sheet",
             "output_item": "Alclad Aluminum Sheet",
             "output_rate": 33.75,
             "machine_name": "Assembler",
             "power_cost": 15.0,
-            "required_inputs": {
-                "Aluminum Ingot": 33.75,
-                "Copper Sheet": 22.5
-            }
+            "required_inputs": { "Aluminum Ingot": 33.75, "Copper Sheet": 22.5 },
+            "byproducts": {}
         },
         {
+            "recipe_name": "Aluminum Casing",
             "output_item": "Aluminum Casing",
             "output_rate": 45.0,
             "machine_name": "Constructor",
             "power_cost": 4.0,
-            "required_inputs": {
-                "Aluminum Ingot": 90.0
-            }
+            "required_inputs": { "Aluminum Ingot": 90.0 },
+            "byproducts": {}
         },
         {
+            "recipe_name": "Alternate: Alclad Casing",
+            "output_item": "Aluminum Casing",
+            "output_rate": 112.5,
+            "machine_name": "Assembler",
+            "power_cost": 15.0,
+            "required_inputs": { "Aluminum Ingot": 150.0, "Copper Ingot": 75.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Fused Modular Frame",
             "output_item": "Fused Modular Frame",
             "output_rate": 1.5,
             "machine_name": "Blender",
             "power_cost": 75.0,
-            "required_inputs": {
-                "Heavy Modular Frame": 1.5,
-                "Aluminum Casing": 75.0,
-                "Rubber": 37.5
-            }
+            "required_inputs": { "Heavy Modular Frame": 1.5, "Aluminum Casing": 75.0, "Rubber": 37.5 },
+            "byproducts": {}
         },
         {
+            "recipe_name": "Alternate: Heat-Fused Frame",
+            "output_item": "Fused Modular Frame",
+            "output_rate": 3.0,
+            "machine_name": "Blender",
+            "power_cost": 75.0,
+            "required_inputs": { "Heavy Modular Frame": 3.0, "Aluminum Ingot": 150.0, "Nitric Acid": 24.0, "Fuel": 30.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Electromagnetic Control Rod",
             "output_item": "Electromagnetic Control Rod",
             "output_rate": 1.5,
             "machine_name": "Assembler",
             "power_cost": 15.0,
-            "required_inputs": {
-                "Stator": 3.0,
-                "Aluminum Casing": 22.5
-            }
+            "required_inputs": { "Stator": 3.0, "Aluminum Casing": 22.5 },
+            "byproducts": {}
         },
         {
+            "recipe_name": "Alternate: Electromagnetic Connection Rod",
+            "output_item": "Electromagnetic Control Rod",
+            "output_rate": 8.0,
+            "machine_name": "Assembler",
+            "power_cost": 15.0,
+            "required_inputs": { "Stator": 8.0, "High-Speed Connector": 4.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Radio Control Unit",
             "output_item": "Radio Control Unit",
             "output_rate": 1.5,
             "machine_name": "Manufacturer",
             "power_cost": 55.0,
-            "required_inputs": {
-                "Aluminum Casing": 22.5,
-                "Crystal Oscillator": 1.5,
-                "Circuit Board": 7.5
-            }
+            "required_inputs": { "Aluminum Casing": 22.5, "Crystal Oscillator": 1.5, "Circuit Board": 7.5 },
+            "byproducts": {}
         },
         {
+            "recipe_name": "Alternate: Radio Connection Unit",
+            "output_item": "Radio Control Unit",
+            "output_rate": 3.75,
+            "machine_name": "Manufacturer",
+            "power_cost": 55.0,
+            "required_inputs": { "Heat Sink": 15.0, "High-Speed Connector": 7.5, "Quartz Crystal": 45.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Alternate: Radio Control System",
+            "output_item": "Radio Control Unit",
+            "output_rate": 4.5,
+            "machine_name": "Manufacturer",
+            "power_cost": 55.0,
+            "required_inputs": { "Crystal Oscillator": 1.5, "Circuit Board": 15.0, "Aluminum Casing": 90.0, "Rubber": 45.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Battery",
             "output_item": "Battery",
             "output_rate": 2.5,
             "machine_name": "Blender",
             "power_cost": 75.0,
-            "required_inputs": {
-                "Sulfuric Acid": 25.0,
-                "Alumina Solution": 25.0,
-                "Aluminum Casing": 7.5
-            }
+            "required_inputs": { "Sulfuric Acid": 25.0, "Alumina Solution": 25.0, "Aluminum Casing": 7.5 },
+            "byproducts": {}
         },
         {
+            "recipe_name": "Alternate: Classic Battery",
+            "output_item": "Battery",
+            "output_rate": 30.0,
+            "machine_name": "Manufacturer",
+            "power_cost": 55.0,
+            "required_inputs": { "Sulfur": 45.0, "Alclad Aluminum Sheet": 52.5, "Plastic": 60.0, "Wire": 90.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Black Powder",
             "output_item": "Black Powder",
             "output_rate": 15.0,
             "machine_name": "Assembler",
             "power_cost": 15.0,
-            "required_inputs": {
-                "Coal": 15.0,
-                "Sulfur": 15.0
-            }
+            "required_inputs": { "Coal": 15.0, "Sulfur": 15.0 },
+            "byproducts": {}
         },
         {
+            "recipe_name": "Alternate: Fine Black Powder",
+            "output_item": "Black Powder",
+            "output_rate": 45.0,
+            "machine_name": "Assembler",
+            "power_cost": 15.0,
+            "required_inputs": { "Sulfur": 7.5, "Compacted Coal": 15.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Modular Engine",
             "output_item": "Modular Engine",
             "output_rate": 1.0,
             "machine_name": "Manufacturer",
             "power_cost": 55.0,
-            "required_inputs": {
-                "Motor": 1.0,
-                "Rubber": 15.0,
-                "Smart Plating": 2.0
-            }
+            "required_inputs": { "Motor": 1.0, "Rubber": 15.0, "Smart Plating": 2.0 },
+            "byproducts": {}
         },
         {
+            "recipe_name": "Turbo Motor",
             "output_item": "Turbo Motor",
             "output_rate": 0.75,
             "machine_name": "Manufacturer",
             "power_cost": 55.0,
-            "required_inputs": {
-                "Modular Engine": 1.125,
-                "Electromagnetic Control Rod": 2.25,
-                "Rotor": 3.75,
-                "Heat Sink": 2.25
-            }
+            "required_inputs": { "Modular Engine": 1.125, "Electromagnetic Control Rod": 2.25, "Rotor": 3.75, "Heat Sink": 2.25 },
+            "byproducts": {}
         },
         {
+            "recipe_name": "Alternate: Turbo Electric Motor",
+            "output_item": "Turbo Motor",
+            "output_rate": 2.8125,
+            "machine_name": "Manufacturer",
+            "power_cost": 55.0,
+            "required_inputs": { "Motor": 6.5625, "Radio Control Unit": 8.4375, "Electromagnetic Control Rod": 4.6875, "Rotor": 6.5625 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Alternate: Turbo Pressure Motor",
+            "output_item": "Turbo Motor",
+            "output_rate": 3.75,
+            "machine_name": "Manufacturer",
+            "power_cost": 55.0,
+            "required_inputs": { "Motor": 7.5, "Pressure Conversion Cube": 1.875, "Packaged Nitrogen Gas": 45.0, "Stator": 15.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Smart Plating",
             "output_item": "Smart Plating",
             "output_rate": 2.0,
             "machine_name": "Assembler",
             "power_cost": 15.0,
-            "required_inputs": {
-                "Reinforced Iron Plate": 6.0,
-                "Rotor": 4.0
-            }
+            "required_inputs": { "Reinforced Iron Plate": 6.0, "Rotor": 4.0 },
+            "byproducts": {}
         },
         {
+            "recipe_name": "Alternate: Plastic Smart Plating",
+            "output_item": "Smart Plating",
+            "output_rate": 5.0,
+            "machine_name": "Manufacturer",
+            "power_cost": 55.0,
+            "required_inputs": { "Reinforced Iron Plate": 2.5, "Rotor": 2.5, "Plastic": 7.5 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Versatile Framework",
             "output_item": "Versatile Framework",
             "output_rate": 2.5,
             "machine_name": "Assembler",
             "power_cost": 15.0,
-            "required_inputs": {
-                "Modular Frame": 2.5,
-                "Steel Beam": 30.0
-            }
+            "required_inputs": { "Modular Frame": 2.5, "Steel Beam": 30.0 },
+            "byproducts": {}
         },
         {
+            "recipe_name": "Alternate: Flexible Framework",
+            "output_item": "Versatile Framework",
+            "output_rate": 7.5,
+            "machine_name": "Manufacturer",
+            "power_cost": 55.0,
+            "required_inputs": { "Modular Frame": 3.75, "Steel Beam": 22.5, "Rubber": 30.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Automated Wiring",
             "output_item": "Automated Wiring",
             "output_rate": 2.5,
             "machine_name": "Assembler",
             "power_cost": 15.0,
-            "required_inputs": {
-                "Stator": 5.0,
-                "Cable": 100.0
-            }
+            "required_inputs": { "Stator": 5.0, "Cable": 100.0 },
+            "byproducts": {}
         },
         {
+            "recipe_name": "Alternate: Automated Speed Wiring",
+            "output_item": "Automated Wiring",
+            "output_rate": 7.5,
+            "machine_name": "Manufacturer",
+            "power_cost": 55.0,
+            "required_inputs": { "Stator": 3.75, "Wire": 75.0, "High-Speed Connector": 1.875 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Adaptive Control Unit",
             "output_item": "Adaptive Control Unit",
             "output_rate": 1.0,
             "machine_name": "Manufacturer",
             "power_cost": 55.0,
-            "required_inputs": {
-                "Automated Wiring": 7.5,
-                "Heavy Modular Frame": 1.5,
-                "Circuit Board": 7.5
-            }
+            "required_inputs": { "Automated Wiring": 7.5, "Heavy Modular Frame": 1.5, "Circuit Board": 7.5 },
+            "byproducts": {}
         },
         {
+            "recipe_name": "Heavy Oil Residue",
             "output_item": "Heavy Oil Residue",
             "output_rate": 40.0,
             "machine_name": "Refinery",
             "power_cost": 30.0,
-            "required_inputs": {
-                "Crude Oil": 60.0
-            },
-            "byproducts": {
-                "Polymer Resin": 30.0
-            }
+            "required_inputs": { "Crude Oil": 60.0 },
+            "byproducts": { "Polymer Resin": 30.0 }
         },
         {
+            "recipe_name": "Alternate: Heavy Oil Residue",
+            "output_item": "Heavy Oil Residue",
+            "output_rate": 40.0,
+            "machine_name": "Refinery",
+            "power_cost": 30.0,
+            "required_inputs": { "Crude Oil": 30.0 },
+            "byproducts": { "Polymer Resin": 20.0 }
+        },
+        {
+            "recipe_name": "Fuel",
             "output_item": "Fuel",
             "output_rate": 40.0,
             "machine_name": "Refinery",
             "power_cost": 30.0,
-            "required_inputs": {
-                "Crude Oil": 60.0
-            },
-            "byproducts": {
-                "Polymer Resin": 20.0
-            }
+            "required_inputs": { "Crude Oil": 60.0 },
+            "byproducts": { "Polymer Resin": 20.0 }
         },
         {
+            "recipe_name": "Alternate: Diluted Fuel",
+            "output_item": "Fuel",
+            "output_rate": 100.0,
+            "machine_name": "Blender",
+            "power_cost": 75.0,
+            "required_inputs": { "Heavy Oil Residue": 50.0, "Water": 100.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Polymer Resin",
+            "output_item": "Polymer Resin",
+            "output_rate": 130.0,
+            "machine_name": "Refinery",
+            "power_cost": 30.0,
+            "required_inputs": { "Crude Oil": 60.0 },
+            "byproducts": { "Heavy Oil Residue": 20.0 }
+        },
+        {
+            "recipe_name": "Alumina Solution",
             "output_item": "Alumina Solution",
             "output_rate": 120.0,
             "machine_name": "Refinery",
             "power_cost": 30.0,
-            "required_inputs": {
-                "Bauxite": 120.0,
-                "Coal": 120.0
-            },
-            "byproducts": {
-                "Water": 120.0
-            }
+            "required_inputs": { "Bauxite": 120.0, "Coal": 120.0 },
+            "byproducts": { "Water": 120.0 }
         },
         {
+            "recipe_name": "Alternate: Sloppy Alumina",
+            "output_item": "Alumina Solution",
+            "output_rate": 240.0,
+            "machine_name": "Refinery",
+            "power_cost": 30.0,
+            "required_inputs": { "Bauxite": 200.0, "Water": 200.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Aluminum Scrap",
             "output_item": "Aluminum Scrap",
             "output_rate": 60.0,
             "machine_name": "Refinery",
             "power_cost": 30.0,
-            "required_inputs": {
-                "Alumina Solution": 120.0,
-                "Coal": 60.0
-            },
-            "byproducts": {
-                "Water": 60.0
-            }
+            "required_inputs": { "Alumina Solution": 120.0, "Coal": 60.0 },
+            "byproducts": { "Water": 60.0 }
         },
         {
+            "recipe_name": "Alternate: Electrode Aluminum Scrap",
+            "output_item": "Aluminum Scrap",
+            "output_rate": 300.0,
+            "machine_name": "Refinery",
+            "power_cost": 30.0,
+            "required_inputs": { "Alumina Solution": 180.0, "Petroleum Coke": 60.0 },
+            "byproducts": { "Water": 105.0 }
+        },
+        {
+            "recipe_name": "Alternate: Instant Scrap",
+            "output_item": "Aluminum Scrap",
+            "output_rate": 300.0,
+            "machine_name": "Blender",
+            "power_cost": 75.0,
+            "required_inputs": { "Bauxite": 150.0, "Coal": 100.0, "Sulfuric Acid": 50.0, "Water": 60.0 },
+            "byproducts": { "Water": 50.0 }
+        },
+        {
+            "recipe_name": "Sulfuric Acid",
             "output_item": "Sulfuric Acid",
             "output_rate": 30.0,
             "machine_name": "Refinery",
             "power_cost": 30.0,
-            "required_inputs": {
-                "Sulfur": 60.0,
-                "Water": 60.0
-            },
+            "required_inputs": { "Sulfur": 60.0, "Water": 60.0 },
             "byproducts": {}
         },
         {
+            "recipe_name": "Petroleum Coke",
             "output_item": "Petroleum Coke",
             "output_rate": 120.0,
             "machine_name": "Refinery",
             "power_cost": 30.0,
-            "required_inputs": {
-                "Heavy Oil Residue": 40.0
-            },
+            "required_inputs": { "Heavy Oil Residue": 40.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Compacted Coal",
+            "output_item": "Compacted Coal",
+            "output_rate": 25.0,
+            "machine_name": "Assembler",
+            "power_cost": 15.0,
+            "required_inputs": { "Coal": 25.0, "Sulfur": 25.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Empty Canister",
+            "output_item": "Empty Canister",
+            "output_rate": 60.0,
+            "machine_name": "Constructor",
+            "power_cost": 4.0,
+            "required_inputs": { "Plastic": 60.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Alternate: Coated Iron Canister",
+            "output_item": "Empty Canister",
+            "output_rate": 60.0,
+            "machine_name": "Assembler",
+            "power_cost": 15.0,
+            "required_inputs": { "Iron Plate": 30.0, "Copper Sheet": 15.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Alternate: Steel Canister",
+            "output_item": "Empty Canister",
+            "output_rate": 40.0,
+            "machine_name": "Constructor",
+            "power_cost": 4.0,
+            "required_inputs": { "Steel Ingot": 40.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Cooling System",
+            "output_item": "Cooling System",
+            "output_rate": 2.5,
+            "machine_name": "Blender",
+            "power_cost": 75.0,
+            "required_inputs": { "Heat Sink": 5.0, "Motor": 2.5, "Nitrogen Gas": 60.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Alternate: Cooling Device",
+            "output_item": "Cooling System",
+            "output_rate": 5.0,
+            "machine_name": "Blender",
+            "power_cost": 75.0,
+            "required_inputs": { "Heat Sink": 10.0, "Motor": 2.5, "Nitrogen Gas": 60.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Portable Miner",
+            "output_item": "Portable Miner",
+            "output_rate": 1.0,
+            "machine_name": "Assembler",
+            "power_cost": 15.0,
+            "required_inputs": { "Steel Pipe": 4.0, "Iron Plate": 4.0 },
+            "byproducts": {}
+        },
+        {
+            "recipe_name": "Alternate: Automated Miner",
+            "output_item": "Portable Miner",
+            "output_rate": 1.0,
+            "machine_name": "Assembler",
+            "power_cost": 15.0,
+            "required_inputs": { "Steel Pipe": 4.0, "Iron Plate": 4.0 },
             "byproducts": {}
         }
     ]

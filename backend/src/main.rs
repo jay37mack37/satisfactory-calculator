@@ -7,7 +7,7 @@ use axum::{
     extract::State,
     http::Method,
 };
-use recipe_engine::{RecipeDatabase, CalculationRequest, CalculationResult};
+use recipe_engine::{RecipeDatabase, CalculationRequest, CalculationResult, RecipeInfo};
 use std::collections::HashMap;
 use std::net::SocketAddr;
 use std::sync::Arc;
@@ -35,6 +35,7 @@ async fn main() {
         .route("/health", get(health_check))
         .route("/api/items", get(get_items))
         .route("/api/icons", get(get_icons))
+        .route("/api/alternates", get(get_alternates))
         .route("/api/calculate", post(calculate))
         .with_state(state)
         .layer(cors);
@@ -64,11 +65,18 @@ async fn get_icons(
     Json(state.icon_map.clone())
 }
 
+async fn get_alternates(
+    State(state): State<Arc<Mutex<AppState>>>,
+) -> Json<HashMap<String, Vec<RecipeInfo>>> {
+    let state = state.lock().await;
+    Json(state.db.all_alternates())
+}
+
 async fn calculate(
     State(state): State<Arc<Mutex<AppState>>>,
     Json(request): Json<CalculationRequest>,
 ) -> Json<CalculationResult> {
     let state = state.lock().await;
-    let result = state.db.calculate_requirements(&request.item, request.rate);
+    let result = state.db.calculate_requirements(&request.item, request.rate, &request.recipe_overrides);
     Json(result)
 }

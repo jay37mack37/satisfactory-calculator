@@ -6,6 +6,8 @@
   let error = "";
   let items = ["Loading..."];
   let iconMap = {};
+  let alternates = {};  // item -> [{recipe_name, output_item, ...}]
+  let recipeOverrides = {};  // item -> recipe_name (user selections)
 
   const beltPresets = [
     { label: "Mk.1", rate: 60 },
@@ -34,6 +36,42 @@
     return iconMap[item] || null;
   }
 
+  // Check if an item has alternate recipes available
+  function hasAlternates(item) {
+    return alternates[item] && alternates[item].length > 1;
+  }
+
+  // Get the currently selected recipe name for an item
+  function getSelectedRecipe(item) {
+    return recipeOverrides[item] || null;
+  }
+
+  // Set a recipe override for an item
+  function setRecipeOverride(item, recipeName) {
+    if (recipeName === "") {
+      delete recipeOverrides[item];
+    } else {
+      recipeOverrides[item] = recipeName;
+    }
+    recipeOverrides = recipeOverrides; // trigger reactivity
+  }
+
+  // Get the display name for a recipe (strip "Alternate: " prefix for display)
+  function recipeDisplayName(recipeName) {
+    return recipeName.replace("Alternate: ", "⚡ ");
+  }
+
+  // Get all items in the current result that have alternates
+  $: itemsWithAlternates = result
+    ? result.nodes
+        .filter(n => hasAlternates(n.item))
+        .map(n => ({
+          item: n.item,
+          currentRecipe: n.recipe_name,
+          options: alternates[n.item] || []
+        }))
+    : [];
+
   // Fetch available items from the backend API
   async function fetchItems() {
     try {
@@ -61,8 +99,21 @@
     }
   }
 
+  // Fetch alternate recipes from the backend API
+  async function fetchAlternates() {
+    try {
+      const res = await fetch("http://localhost:3000/api/alternates");
+      if (res.ok) {
+        alternates = await res.json();
+      }
+    } catch (e) {
+      console.error("Failed to fetch alternates:", e);
+    }
+  }
+
   fetchItems();
   fetchIcons();
+  fetchAlternates();
 
   async function calculate() {
     loading = true;
@@ -73,7 +124,11 @@
       const res = await fetch("http://localhost:3000/api/calculate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ item: selectedItem, rate: desiredRate }),
+        body: JSON.stringify({
+          item: selectedItem,
+          rate: desiredRate,
+          recipe_overrides: recipeOverrides
+        }),
       });
 
       if (!res.ok) throw new Error(`Server error: ${res.statusText}`);
@@ -184,11 +239,39 @@
         </div>
       </div>
 
+      {#if itemsWithAlternates.length > 0}
+        <h3>🔀 Alternate Recipes</h3>
+        <p class="alt-hint">Select alternate recipes to use for specific items. Default uses the standard recipe.</p>
+        <div class="alt-grid">
+          {#each itemsWithAlternates as entry}
+            <div class="alt-card">
+              <div class="alt-header">
+                {#if getIcon(entry.item)}
+                  <img src={getIcon(entry.item)} alt={entry.item} class="item-icon" />
+                {/if}
+                <span class="alt-item-name">{entry.item}</span>
+              </div>
+              <select
+                class="alt-select"
+                value={recipeOverrides[entry.item] || ""}
+                on:change={(e) => setRecipeOverride(entry.item, e.target.value)}
+              >
+                <option value="">Standard</option>
+                {#each entry.options as opt}
+                  <option value={opt.recipe_name}>{recipeDisplayName(opt.recipe_name)} ({opt.output_rate}/min, {opt.machine_name})</option>
+                {/each}
+              </select>
+            </div>
+          {/each}
+        </div>
+      {/if}
+
       <h3>All Production Nodes</h3>
       <table>
         <thead>
           <tr>
             <th>Item</th>
+            <th>Recipe</th>
             <th>Rate (/min)</th>
             <th>Machine</th>
             <th>Machines</th>
@@ -207,6 +290,9 @@
                   />
                 {/if}
                 {node.item}
+              </td>
+              <td class="recipe-cell" class:alt-recipe={node.recipe_name.startsWith("Alternate:")}>
+                {node.recipe_name.startsWith("Alternate:") ? "⚡ " + node.recipe_name.replace("Alternate: ", "") : "Standard"}
               </td>
               <td>{node.rate.toFixed(2)}</td>
               <td>{node.machine_name}</td>
@@ -480,6 +566,58 @@
     font-family: var(--font-mono);
   }
 
+  /* Alternate recipe section */
+  .alt-hint {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+  }
+
+  .alt-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .alt-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+  }
+
+  .alt-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .alt-item-name {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+  }
+
+  .alt-select {
+    width: 100%;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 10px;
+    color: var(--text-primary);
+    font-size: 0.85rem;
+    font-family: var(--font-sans);
+    outline: none;
+    cursor: pointer;
+  }
+
+  .alt-select:focus {
+    border-color: var(--accent);
+  }
+
+  /* Table */
   table {
     width: 100%;
     border-collapse: collapse;
@@ -517,6 +655,15 @@
 
   tr:hover td {
     background: var(--bg-tertiary);
+  }
+
+  .recipe-cell {
+    font-size: 0.8rem;
+  }
+
+  .alt-recipe {
+    color: #f59e0b;
+    font-weight: 600;
   }
 
   .raw-grid {
