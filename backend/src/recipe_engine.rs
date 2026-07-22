@@ -245,3 +245,96 @@ impl RecipeDatabase {
         }
     }
 }
+
+// ─── Tests ────────────────────────────────────────────────────────────
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn db() -> RecipeDatabase {
+        RecipeDatabase::new()
+    }
+
+    #[test]
+    fn items_is_sorted_and_nonempty() {
+        let items = db().items();
+        assert!(!items.is_empty(), "item list should not be empty");
+        let mut sorted = items.clone();
+        sorted.sort();
+        assert_eq!(items, sorted, "items() should return a sorted list");
+        assert!(items.contains(&"Rotor".to_string()));
+    }
+
+    #[test]
+    fn default_recipe_is_not_an_alternate() {
+        let r = db().default_recipe("Iron Ingot").expect("Iron Ingot has a default recipe");
+        assert!(!r.is_alternate());
+        assert_eq!(r.recipe_name, "Iron Ingot");
+    }
+
+    #[test]
+    fn rotor_calculation_has_power_and_raw_ores() {
+        let result = db().calculate_requirements("Rotor", 10.0, &HashMap::new());
+        assert_eq!(result.target_item, "Rotor");
+        assert_eq!(result.target_rate, 10.0);
+        assert!(!result.nodes.is_empty(), "should produce production nodes");
+        assert!(result.total_power > 0.0, "total power should be positive");
+        // The standard Rotor chain bottoms out at Iron Ore.
+        assert!(result.raw_resources.contains_key("Iron Ore"));
+        let iron_ore = result.raw_resources["Iron Ore"];
+        assert!(iron_ore > 0.0);
+        // No byproducts in the standard Rotor chain.
+        assert!(result.byproducts.is_empty());
+    }
+
+    #[test]
+    fn alternate_override_changes_the_tree() {
+        let d = db();
+        let standard = d.calculate_requirements("Rotor", 10.0, &HashMap::new());
+
+        let mut overrides = HashMap::new();
+        overrides.insert("Screws".to_string(), "Alternate: Cast Screws".to_string());
+        let overridden = d.calculate_requirements("Rotor", 10.0, &overrides);
+
+        // The Screws node should now use the alternate recipe.
+        let screws = overridden
+            .nodes
+            .iter()
+            .filter(|n| n.item == "Screws")
+            .collect::<Vec<_>>();
+        assert_eq!(screws.len(), 1);
+        assert_eq!(screws[0].recipe_name, "Alternate: Cast Screws");
+
+        // Cast Screws skips the Iron Rod step, so there is one fewer node
+        // and the total power differs.
+        assert_eq!(standard.nodes.len(), 8);
+        assert_eq!(overridden.nodes.len(), 7);
+        assert!((overridden.total_power - standard.total_power).abs() > 1e-6);
+    }
+
+    #[test]
+    fn byproducts_are_recorded() {
+        let result = db().calculate_requirements("Heavy Oil Residue", 40.0, &HashMap::new());
+        assert_eq!(result.byproducts.len(), 1);
+        let bp = &result.byproducts[0];
+        assert_eq!(bp.item, "Polymer Resin");
+        assert!((bp.rate - 30.0).abs() < 1e-6, "Polymer Resin rate should be 30");
+        assert_eq!(bp.source_item, "Heavy Oil Residue");
+        assert_eq!(bp.source_machine, "Refinery");
+        // Crude Oil is the raw input.
+        assert!(result.raw_resources.contains_key("Crude Oil"));
+    }
+
+    #[test]
+    fn all_alternates_only_lists_items_with_multiple_recipes() {
+        let all = db().all_alternates();
+        assert!(!all.is_empty());
+        for opts in all.values() {
+            assert!(opts.len() > 1, "every item in all_alternates needs >1 recipe");
+        }
+        // Rotor has standard + Copper Rotor + Steel Rotor.
+        assert!(all.contains_key("Rotor"));
+        assert_eq!(all["Rotor"].len(), 3);
+    }
+}

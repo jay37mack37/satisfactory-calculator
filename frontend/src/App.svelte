@@ -1,216 +1,67 @@
 <script>
-  let selectedItem = "Rotor";
-  let desiredRate = 10;
-  let result = null;
-  let loading = false;
-  let error = "";
-  let items = ["Loading..."];
-  let iconMap = {};
-  let alternates = {}; // item -> [{recipe_name, output_item, ...}]
-  let recipeOverrides = {}; // item -> recipe_name (user selections)
+  import { db, iconUrl } from "./lib/engine.js";
+  import Header from "./lib/components/Header.svelte";
+  import InputPanel from "./lib/components/InputPanel.svelte";
+  import SummaryCards from "./lib/components/SummaryCards.svelte";
+  import AlternatePicker from "./lib/components/AlternatePicker.svelte";
+  import ProductionTable from "./lib/components/ProductionTable.svelte";
+  import ProductionTree from "./lib/components/ProductionTree.svelte";
+  import RawResources from "./lib/components/RawResources.svelte";
+  import Byproducts from "./lib/components/Byproducts.svelte";
 
-  const beltPresets = [
-    { label: "Mk.1", rate: 60 },
-    { label: "Mk.2", rate: 120 },
-    { label: "Mk.3", rate: 270 },
-    { label: "Mk.4", rate: 480 },
-    { label: "Mk.5", rate: 780 },
-    { label: "Mk.6", rate: 1200 },
-  ];
+  const items = db.items();
+  const alternates = db.allAlternates();
 
-  const pipePresets = [
-    { label: "Mk.1", rate: 300 },
-    { label: "Mk.2", rate: 600 },
-    { label: "Mk.3", rate: 1200 },
-  ];
+  let selectedItem = $state(items.includes("Rotor") ? "Rotor" : items[0]);
+  let desiredRate = $state(10);
+  let result = $state(null);
+  let error = $state("");
 
-  function setBeltRate(rate) {
-    desiredRate = rate;
-  }
+  // item -> recipe_name chosen by the user (only alternates stored).
+  let recipeOverrides = $state({});
 
-  function setPipeRate(rate) {
-    desiredRate = rate;
-  }
+  // Items in the current result that have more than one recipe.
+  let itemsWithAlternates = $derived(
+    result
+      ? result.nodes
+          .filter((n) => alternates[n.item] && alternates[n.item].length > 1)
+          .map((n) => ({
+            item: n.item,
+            currentRecipe: n.recipe_name,
+            options: alternates[n.item],
+          }))
+      : []
+  );
 
-  function getIcon(item) {
-    return iconMap[item] || null;
-  }
-
-  // Check if an item has alternate recipes available
-  function hasAlternates(item) {
-    return alternates[item] && alternates[item].length > 1;
-  }
-
-  // Get the currently selected recipe name for an item
-  function getSelectedRecipe(item) {
-    return recipeOverrides[item] || null;
-  }
-
-  // Set a recipe override for an item
-  function setRecipeOverride(item, recipeName) {
-    if (recipeName === "") {
-      delete recipeOverrides[item];
-    } else {
-      recipeOverrides[item] = recipeName;
-    }
-    recipeOverrides = recipeOverrides; // trigger reactivity
-  }
-
-  // Get the display name for a recipe (strip "Alternate: " prefix for display)
-  function recipeDisplayName(recipeName) {
-    return recipeName.replace("Alternate: ", "⚡ ");
-  }
-
-  // Get all items in the current result that have alternates
-  $: itemsWithAlternates = result
-    ? result.nodes
-        .filter((n) => hasAlternates(n.item))
-        .map((n) => ({
-          item: n.item,
-          currentRecipe: n.recipe_name,
-          options: alternates[n.item] || [],
-        }))
-    : [];
-
-  // Fetch available items from the backend API
-  async function fetchItems() {
-    try {
-      const res = await fetch("http://localhost:3000/api/items");
-      if (res.ok) {
-        items = await res.json();
-        if (items.length > 0 && !items.includes(selectedItem)) {
-          selectedItem = items[0];
-        }
-      }
-    } catch (e) {
-      console.error("Failed to fetch items:", e);
-    }
-  }
-
-  // Fetch icon map from the backend API
-  async function fetchIcons() {
-    try {
-      const res = await fetch("http://localhost:3000/api/icons");
-      if (res.ok) {
-        iconMap = await res.json();
-      }
-    } catch (e) {
-      console.error("Failed to fetch icons:", e);
-    }
-  }
-
-  // Fetch alternate recipes from the backend API
-  async function fetchAlternates() {
-    try {
-      const res = await fetch("http://localhost:3000/api/alternates");
-      if (res.ok) {
-        alternates = await res.json();
-      }
-    } catch (e) {
-      console.error("Failed to fetch alternates:", e);
-    }
-  }
-
-  fetchItems();
-  fetchIcons();
-  fetchAlternates();
-
-  async function calculate() {
-    loading = true;
+  function calculate() {
     error = "";
-    result = null;
-
     try {
-      const res = await fetch("http://localhost:3000/api/calculate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          item: selectedItem,
-          rate: desiredRate,
-          recipe_overrides: recipeOverrides,
-        }),
-      });
-
-      if (!res.ok) throw new Error(`Server error: ${res.statusText}`);
-      result = await res.json();
+      result = db.calculateRequirements(selectedItem, desiredRate, recipeOverrides);
     } catch (e) {
       error = e.message;
-    } finally {
-      loading = false;
+      result = null;
+    }
+  }
+
+  function setRecipeOverride(item, recipeName) {
+    if (recipeName === "") {
+      const { [item]: _omit, ...rest } = recipeOverrides;
+      recipeOverrides = rest;
+    } else {
+      recipeOverrides = { ...recipeOverrides, [item]: recipeName };
     }
   }
 </script>
 
 <main class="container">
-  <header>
-    <h1>⚡ Satisfactory Calculator</h1>
-    <p class="subtitle">
-      Production chain planner — pick an item, set the rate, get the full
-      breakdown
-    </p>
-  </header>
+  <Header />
 
-  <section class="input-panel">
-    <div class="field">
-      <label for="item-select">Target Item</label>
-      <select id="item-select" bind:value={selectedItem}>
-        {#each items as item}
-          <option value={item}>{item}</option>
-        {/each}
-      </select>
-      {#if getIcon(selectedItem)}
-        <div class="selected-item-preview">
-          <img
-            src={getIcon(selectedItem)}
-            alt={selectedItem}
-            class="item-icon-lg"
-          />
-          <span>{selectedItem}</span>
-        </div>
-      {/if}
-    </div>
-
-    <div class="field">
-      <label for="rate-input">Rate (items/min)</label>
-      <input
-        id="rate-input"
-        type="number"
-        min="0.1"
-        step="0.1"
-        bind:value={desiredRate}
-      />
-      <div class="belt-presets">
-        <span class="belt-label">Belt:</span>
-        {#each beltPresets as preset}
-          <button
-            class="belt-btn"
-            class:active={desiredRate === preset.rate}
-            on:click={() => setBeltRate(preset.rate)}
-            title="Conveyor Belt {preset.label} — {preset.rate} items/min"
-          >
-            {preset.label}
-          </button>
-        {/each}
-      </div>
-      <div class="belt-presets">
-        <span class="belt-label">Pipe:</span>
-        {#each pipePresets as preset}
-          <button
-            class="pipe-btn"
-            class:active={desiredRate === preset.rate}
-            on:click={() => setPipeRate(preset.rate)}
-            title="Pipeline {preset.label} — {preset.rate} m³/min"
-          >
-            {preset.label}
-          </button>
-        {/each}
-      </div>
-    </div>
-
-    <button class="calc-btn" on:click={calculate} disabled={loading}>
-      {loading ? "Calculating…" : "Calculate"}
-    </button>
-  </section>
+  <InputPanel
+    {items}
+    bind:selectedItem
+    bind:desiredRate
+    oncalculate={calculate}
+  />
 
   {#if error}
     <div class="error-banner">❌ {error}</div>
@@ -219,579 +70,101 @@
   {#if result}
     <section class="results">
       <h2>
-        Production Tree for {result.target_item} @ {result.target_rate}/min
+        <span class="target-name">{result.target_item}</span>
+        <span class="target-rate">@ {result.target_rate}/min</span>
       </h2>
 
-      <div class="summary-cards">
-        <div class="card">
-          <span class="card-label">Total Power</span>
-          <span class="card-value">{result.total_power.toFixed(1)} MW</span>
-        </div>
-        <div class="card">
-          <span class="card-label">Production Steps</span>
-          <span class="card-value">{result.nodes.length}</span>
-        </div>
-        <div class="card">
-          <span class="card-label">Raw Resources</span>
-          <span class="card-value"
-            >{Object.keys(result.raw_resources).length}</span
-          >
-        </div>
-      </div>
+      <SummaryCards {result} />
 
       {#if itemsWithAlternates.length > 0}
-        <h3>🔀 Alternate Recipes</h3>
-        <p class="alt-hint">
-          Select alternate recipes to use for specific items. Default uses the
-          standard recipe.
-        </p>
-        <div class="alt-grid">
-          {#each itemsWithAlternates as entry}
-            <div class="alt-card">
-              <div class="alt-header">
-                {#if getIcon(entry.item)}
-                  <img
-                    src={getIcon(entry.item)}
-                    alt={entry.item}
-                    class="item-icon"
-                  />
-                {/if}
-                <span class="alt-item-name">{entry.item}</span>
-              </div>
-              <select
-                class="alt-select"
-                value={recipeOverrides[entry.item] || ""}
-                on:change={(e) => setRecipeOverride(entry.item, e.target.value)}
-              >
-                <option value="">Standard</option>
-                {#each entry.options as opt}
-                  <option value={opt.recipe_name}
-                    >{recipeDisplayName(opt.recipe_name)} ({opt.output_rate}/min,
-                    {opt.machine_name})</option
-                  >
-                {/each}
-              </select>
-            </div>
-          {/each}
-        </div>
+        <AlternatePicker
+          entries={itemsWithAlternates}
+          overrides={recipeOverrides}
+          onchange={setRecipeOverride}
+        />
       {/if}
 
-      <h3>All Production Nodes</h3>
-      <table>
-        <thead>
-          <tr>
-            <th>Item</th>
-            <th>Recipe</th>
-            <th>Rate (/min)</th>
-            <th>Machine</th>
-            <th>Machines</th>
-            <th>Power (MW)</th>
-          </tr>
-        </thead>
-        <tbody>
-          {#each result.nodes as node}
-            <tr>
-              <td class="item-cell">
-                {#if getIcon(node.item)}
-                  <img
-                    src={getIcon(node.item)}
-                    alt={node.item}
-                    class="item-icon"
-                  />
-                {/if}
-                {node.item}
-              </td>
-              <td
-                class="recipe-cell"
-                class:alt-recipe={node.recipe_name.startsWith("Alternate:")}
-              >
-                {node.recipe_name.startsWith("Alternate:")
-                  ? "⚡ " + node.recipe_name.replace("Alternate: ", "")
-                  : "Standard"}
-              </td>
-              <td>{node.rate.toFixed(2)}</td>
-              <td>{node.machine_name}</td>
-              <td>{node.machines_needed.toFixed(2)}</td>
-              <td>{node.power_cost.toFixed(2)}</td>
-            </tr>
-          {/each}
-        </tbody>
-      </table>
-
-      <h3>Raw Resources Needed</h3>
-      <div class="raw-grid">
-        {#each Object.entries(result.raw_resources) as [resource, rate]}
-          <div class="raw-card">
-            <div class="raw-left">
-              {#if getIcon(resource)}
-                <img src={getIcon(resource)} alt={resource} class="item-icon" />
-              {/if}
-              <span class="raw-name">{resource}</span>
-            </div>
-            <span class="raw-rate">{rate.toFixed(2)}/min</span>
-          </div>
-        {/each}
-      </div>
+      <ProductionTree nodes={result.nodes} />
+      <ProductionTable nodes={result.nodes} />
+      <RawResources rawResources={result.raw_resources} />
 
       {#if result.byproducts && result.byproducts.length > 0}
-        <h3>🎁 Byproducts</h3>
-        <div class="byproduct-grid">
-          {#each result.byproducts as bp}
-            <div class="byproduct-card">
-              <div class="bp-header">
-                <div class="bp-left">
-                  {#if getIcon(bp.item)}
-                    <img
-                      src={getIcon(bp.item)}
-                      alt={bp.item}
-                      class="item-icon"
-                    />
-                  {/if}
-                  <span class="bp-name">{bp.item}</span>
-                </div>
-                <span class="bp-rate">+{bp.rate.toFixed(2)}/min</span>
-              </div>
-              <span class="bp-source"
-                >from {bp.source_item} ({bp.source_machine})</span
-              >
-            </div>
-          {/each}
-        </div>
+        <Byproducts byproducts={result.byproducts} />
       {/if}
     </section>
+  {:else}
+    <div class="empty glass">
+      <div class="empty-icon">🏭</div>
+      <p>Pick an item and hit <strong>Calculate</strong> to see the full production chain.</p>
+    </div>
   {/if}
 </main>
 
 <style>
   .container {
-    max-width: 960px;
+    max-width: 1040px;
     margin: 0 auto;
-    padding: 40px 24px;
+    padding: 40px 24px 80px;
   }
 
-  header {
-    text-align: center;
-    margin-bottom: 40px;
+  .results {
+    animation: fadeIn 0.35s ease;
   }
 
-  h1 {
-    font-size: 2.5rem;
-    color: var(--accent);
-    margin-bottom: 8px;
-  }
-
-  .subtitle {
-    color: var(--text-secondary);
-    font-size: 1.1rem;
-  }
-
-  .input-panel {
+  h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 22px;
     display: flex;
-    gap: 16px;
-    align-items: flex-end;
-    background: var(--bg-secondary);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 24px;
-    margin-bottom: 32px;
+    align-items: baseline;
+    gap: 10px;
+    flex-wrap: wrap;
   }
 
-  .field {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    flex: 1;
-  }
-
-  label {
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-    font-weight: 500;
-  }
-
-  select,
-  input {
-    background: var(--bg-tertiary);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 10px 14px;
+  .target-name {
     color: var(--text-primary);
-    font-size: 1rem;
-    font-family: var(--font-sans);
-    outline: none;
-    transition: border-color 0.2s;
   }
 
-  select:focus,
-  input:focus {
-    border-color: var(--accent);
-  }
-
-  .belt-presets {
-    display: flex;
-    gap: 4px;
-    align-items: center;
-    margin-top: 6px;
-  }
-
-  .belt-label {
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    margin-right: 2px;
-  }
-
-  .belt-btn {
-    background: var(--bg-tertiary);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 3px 8px;
-    color: var(--text-secondary);
-    font-size: 0.75rem;
+  .target-rate {
     font-family: var(--font-mono);
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-
-  .belt-btn:hover {
-    border-color: var(--accent);
+    font-size: 1.1rem;
     color: var(--accent);
-  }
-
-  .belt-btn.active {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: #000;
     font-weight: 600;
-  }
-
-  .pipe-btn {
-    background: var(--bg-tertiary);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 3px 8px;
-    color: var(--text-secondary);
-    font-size: 0.75rem;
-    font-family: var(--font-mono);
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-
-  .pipe-btn:hover {
-    border-color: #3b82f6;
-    color: #3b82f6;
-  }
-
-  .pipe-btn.active {
-    background: #3b82f6;
-    border-color: #3b82f6;
-    color: #fff;
-    font-weight: 600;
-  }
-
-  .calc-btn {
-    background: var(--accent);
-    color: #000;
-    border: none;
-    border-radius: 8px;
-    padding: 10px 28px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition:
-      background 0.2s,
-      transform 0.1s;
-    white-space: nowrap;
-  }
-
-  .calc-btn:hover:not(:disabled) {
-    background: var(--accent-hover);
-    transform: translateY(-1px);
-  }
-
-  .calc-btn:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
   }
 
   .error-banner {
-    background: rgba(239, 68, 68, 0.1);
+    background: rgba(239, 68, 68, 0.12);
     border: 1px solid var(--error);
-    border-radius: 8px;
-    padding: 12px 16px;
+    border-radius: var(--radius-sm);
+    padding: 14px 18px;
     color: var(--error);
     margin-bottom: 24px;
   }
 
-  .results {
-    animation: fadeIn 0.3s ease;
+  .empty {
+    text-align: center;
+    padding: 64px 24px;
+    color: var(--text-muted);
+  }
+
+  .empty-icon {
+    font-size: 2.6rem;
+    margin-bottom: 12px;
+    opacity: 0.6;
+  }
+
+  .empty strong {
+    color: var(--accent);
   }
 
   @keyframes fadeIn {
     from {
       opacity: 0;
-      transform: translateY(8px);
+      transform: translateY(10px);
     }
     to {
       opacity: 1;
       transform: translateY(0);
     }
-  }
-
-  h2 {
-    font-size: 1.5rem;
-    margin-bottom: 20px;
-    color: var(--text-primary);
-  }
-
-  h3 {
-    font-size: 1.15rem;
-    margin: 28px 0 14px;
-    color: var(--text-secondary);
-  }
-
-  .summary-cards {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-    margin-bottom: 28px;
-  }
-
-  .card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 20px;
-    text-align: center;
-  }
-
-  .card-label {
-    display: block;
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 6px;
-  }
-
-  .card-value {
-    display: block;
-    font-size: 1.6rem;
-    font-weight: 700;
-    color: var(--accent);
-    font-family: var(--font-mono);
-  }
-
-  /* Alternate recipe section */
-  .alt-hint {
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    margin-bottom: 12px;
-  }
-
-  .alt-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 12px;
-    margin-bottom: 24px;
-  }
-
-  .alt-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 12px 14px;
-  }
-
-  .alt-header {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 8px;
-  }
-
-  .alt-item-name {
-    font-weight: 600;
-    color: var(--text-primary);
-    font-size: 0.95rem;
-  }
-
-  .alt-select {
-    width: 100%;
-    background: var(--bg-tertiary);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 6px 10px;
-    color: var(--text-primary);
-    font-size: 0.85rem;
-    font-family: var(--font-sans);
-    outline: none;
-    cursor: pointer;
-  }
-
-  .alt-select:focus {
-    border-color: var(--accent);
-  }
-
-  /* Table */
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    background: var(--bg-secondary);
-    border-radius: 10px;
-    overflow: hidden;
-    border: 1px solid var(--border);
-  }
-
-  thead {
-    background: var(--bg-tertiary);
-  }
-
-  th {
-    padding: 12px 16px;
-    text-align: left;
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  td {
-    padding: 12px 16px;
-    font-size: 0.95rem;
-    border-bottom: 1px solid var(--border);
-    font-family: var(--font-mono);
-    font-size: 0.9rem;
-  }
-
-  tr:last-child td {
-    border-bottom: none;
-  }
-
-  tr:hover td {
-    background: var(--bg-tertiary);
-  }
-
-  .recipe-cell {
-    font-size: 0.8rem;
-  }
-
-  .alt-recipe {
-    color: #f59e0b;
-    font-weight: 600;
-  }
-
-  .raw-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 12px;
-  }
-
-  .raw-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 14px 16px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .raw-name {
-    font-weight: 500;
-  }
-
-  .raw-rate {
-    font-family: var(--font-mono);
-    color: var(--accent);
-    font-size: 0.9rem;
-  }
-
-  .byproduct-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 12px;
-  }
-
-  .byproduct-card {
-    background: var(--bg-card);
-    border: 1px solid rgba(34, 197, 94, 0.3);
-    border-radius: 8px;
-    padding: 14px 16px;
-  }
-
-  .bp-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 4px;
-  }
-
-  .bp-name {
-    font-weight: 500;
-  }
-
-  .bp-rate {
-    font-family: var(--font-mono);
-    color: var(--success);
-    font-size: 0.9rem;
-    font-weight: 600;
-  }
-
-  .bp-source {
-    font-size: 0.75rem;
-    color: var(--text-muted);
-  }
-
-  /* Item icons */
-  .item-icon {
-    width: 24px;
-    height: 24px;
-    object-fit: contain;
-    vertical-align: middle;
-    margin-right: 6px;
-    image-rendering: pixelated;
-    flex-shrink: 0;
-  }
-
-  .item-icon-lg {
-    width: 48px;
-    height: 48px;
-    object-fit: contain;
-    image-rendering: pixelated;
-  }
-
-  .selected-item-preview {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-top: 8px;
-    padding: 8px 12px;
-    background: var(--bg-tertiary);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-  }
-
-  .selected-item-preview span {
-    font-weight: 600;
-    color: var(--text-primary);
-  }
-
-  .item-cell {
-    display: flex;
-    align-items: center;
-    white-space: nowrap;
-  }
-
-  .raw-left {
-    display: flex;
-    align-items: center;
-    min-width: 0;
-  }
-
-  .bp-left {
-    display: flex;
-    align-items: center;
-    min-width: 0;
   }
 </style>

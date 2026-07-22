@@ -1,18 +1,43 @@
 :root {
-  --bg-primary: #0f1117;
-  --bg-secondary: #1a1d27;
-  --bg-tertiary: #252836;
-  --bg-card: #1e2130;
-  --border: #2e3144;
-  --text-primary: #e2e4eb;
-  --text-secondary: #9ca0b0;
+  /* ── Surfaces ── */
+  --bg-primary: #0b0d14;
+  --bg-secondary: #141826;
+  --bg-tertiary: #1c2236;
+  --bg-card: rgba(28, 34, 54, 0.55);
+  --bg-card-solid: #1c2236;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.14);
+
+  /* ── Text ── */
+  --text-primary: #e8eaf2;
+  --text-secondary: #a4a9bd;
   --text-muted: #6b7084;
-  --accent: #f59e0b;
-  --accent-hover: #d97706;
-  --accent-glow: rgba(245, 158, 11, 0.15);
+
+  /* ── Accent (Satisfactory amber) ── */
+  --accent: #f5a623;
+  --accent-2: #ff7a18;
+  --accent-hover: #d9890f;
+  --accent-glow: rgba(245, 166, 35, 0.35);
+  --accent-grad: linear-gradient(135deg, #ffb347 0%, #ff7a18 100%);
+
+  /* ── Pipe / fluid (blue) ── */
+  --pipe: #3b82f6;
+  --pipe-grad: linear-gradient(135deg, #60a5fa 0%, #2563eb 100%);
+
+  /* ── Status ── */
   --success: #22c55e;
+  --success-glow: rgba(34, 197, 94, 0.25);
   --error: #ef4444;
-  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  /* ── Effects ── */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.35);
+  --shadow-glow: 0 0 24px var(--accent-glow);
+  --radius: 14px;
+  --radius-sm: 8px;
+
+  /* ── Type ── */
+  --font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
@@ -22,13 +47,76 @@
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: var(--font-sans);
-  background-color: var(--bg-primary);
   color: var(--text-primary);
   min-height: 100vh;
+  background-color: var(--bg-primary);
+  /* Animated mesh-gradient backdrop */
+  background-image:
+    radial-gradient(60rem 60rem at 80% -10%, rgba(245, 166, 35, 0.10), transparent 60%),
+    radial-gradient(50rem 50rem at -10% 10%, rgba(59, 130, 246, 0.10), transparent 60%),
+    radial-gradient(40rem 40rem at 50% 120%, rgba(124, 58, 237, 0.10), transparent 60%);
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 #app {
   min-height: 100vh;
+}
+
+/* ── Reusable glass card ── */
+.glass {
+  background: var(--bg-card);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* ── Selection ── */
+::selection {
+  background: var(--accent-glow);
+  color: var(--text-primary);
+}
+
+/* ── Shared item icon baseline ── */
+.item-icon {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+  vertical-align: middle;
+  flex-shrink: 0;
+  image-rendering: -webkit-optimize-contrast;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
 }
